@@ -14,7 +14,6 @@ int             main()
 {
     t_wolf3d       wolf;
     t_color     color;
-    t_cl        cl;
 
     wolf = init_sdl();
     wolf.is_running = 1;
@@ -35,10 +34,6 @@ int             main()
         SDL_RenderCopy(wolf.renderer, wolf.texture, NULL, NULL);
         SDL_RenderPresent(wolf.renderer);
 	}
-    clFinish(cl.commands);
-	clReleaseMemObject(cl.data);
-    clReleaseCommandQueue(cl.commands);
-    clReleaseContext(cl.context);
     destroy_sdl(wolf);
     return (0);
 }
