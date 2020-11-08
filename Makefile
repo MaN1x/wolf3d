@@ -6,7 +6,7 @@ $(NAME): all
 
 SRC_FILES = $(addprefix src/, $(SRC))
 all:
-	@gcc main.c $(SRC_FILES) -I include -L lib -l SDL2 -framework OpenCL -o $(NAME)
+	@gcc main.c $(SRC_FILES) -I include -L lib -l SDL2 -o $(NAME)
 
 clean:
 	@rm -rf $(NAME)

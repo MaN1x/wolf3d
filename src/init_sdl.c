@@ -20,6 +20,6 @@ t_wolf3d		init_sdl()
    	wolf.texture = SDL_CreateTexture(wolf.renderer,
         SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, 640, 480);
     wolf.pixels = malloc(sizeof(Uint32) * 640 * 480);//new Uint32[640 * 480];
-    memset(wolf.pixels, 255, 640 * 480 * sizeof(Uint32));
+    //memset(wolf.pixels, 0, 640 * 480 * sizeof(Uint32));
 	return (wolf);
 }
