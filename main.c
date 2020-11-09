@@ -8,6 +8,7 @@
  */
 
 #include "wolf3d.h"
+//#include "libft.h"
 #include <stdio.h>
 
 void            draw_map(int mapX, int mapY, int map[8][8], t_wolf3d *wolf)
