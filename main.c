@@ -10,14 +10,13 @@
 #include "wolf3d.h"
 #include <stdio.h>
 
-void            drawMap(int mapX, int mapY, int map[8][8], t_wolf3d wolf)
+void            drawMap(int mapX, int mapY, int map[8][8], t_wolf3d *wolf)
 {
    int x, y, xo, yo;
 
    x = 0;
    y = 0;
    t_color color;
-
 
     int mapGridSquareSize = 480/mapX;
     int mapXOffset = (640 - 480) / 2;
@@ -32,26 +31,21 @@ void            drawMap(int mapX, int mapY, int map[8][8], t_wolf3d wolf)
 				color.r = 0;
 				color.g = 0;
 				color.b = 255;
-				//wolf.pixels[(x + y * 640)] = 0xffffff;
 			}
 			else
 			{
 				color.r = 255;
 				color.g = 0;
 				color.b = 0;	
-				//wolf.pixels[(x + y * 640)] = 0xff0000;
 			}
 			SDL_Rect r;
 			r.w = mapGridSquareSize / 2;
     		r.h = mapGridSquareSize / 2;
 			r.x = (mapGridSquareSize / 2 * x) + mapXOffset;
 			r.y = (mapGridSquareSize / 2 * y) + mapYOffset;
-			//SDL_RenderClear( wolf.renderer );
-			SDL_SetRenderDrawColor( wolf.renderer, color.r, color.g, color.b, 255);
-			//SDL_RenderClear( wolf.renderer );
-			SDL_RenderFillRect( wolf.renderer, &r );
-			//SDL_Delay(2);
-			SDL_RenderPresent(wolf.renderer);
+
+			SDL_SetRenderDrawColor( wolf->renderer, color.r, color.g, color.b, 255);
+			SDL_RenderDrawRect(wolf->renderer, &r);
             x++;
         }
         y++;
@@ -71,8 +65,8 @@ int             main()
         {1, 0, 0, 0, 0, 0, 0, 1},
         {1, 0, 0, 0, 0, 0, 0, 1},
         {1, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 1, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 1},
+        {1, 1, 0, 1, 0, 0, 0, 1},
+        {1, 1, 1, 0, 0, 0, 0, 1},
         {1, 1, 0, 0, 0, 0, 0, 1},
         {1, 1, 1, 1, 1, 1, 1, 1}
     };
@@ -85,9 +79,6 @@ int             main()
     int x = 100;
     int y = 100;
     while (wolf.is_running) {
-		drawMap(mapX, mapY, map, wolf);
-        //put_pixel_sdl(wolf, x,y,color);
-        //wolf.pixels[x + y * 640] = 0xfff000;
         while (SDL_PollEvent(&wolf.event)) {
             if (wolf.event.type == SDL_QUIT || wolf.event.key.keysym.sym == SDLK_ESCAPE) {
                 wolf.is_running = 0;
@@ -95,19 +86,21 @@ int             main()
             if (wolf.event.type == SDL_KEYDOWN)
             {
                 if (wolf.event.key.keysym.sym == SDLK_UP)
-                    y += 5;
+                    y += 1;
                 else if (wolf.event.key.keysym.sym == SDLK_DOWN)
-                    y -= 5;
+                    y -= 1;
                 else if (wolf.event.key.keysym.sym == SDLK_RIGHT)
-                    x += 5;
+                    x += 1;
                 else if (wolf.event.key.keysym.sym == SDLK_LEFT)
-                    x -= 5;
+                    x -= 1;
             }
     	}
-       // SDL_RenderClear(wolf.renderer);
-        //SDL_UpdateTexture(wolf.texture, NULL, wolf.pixels, 640 * sizeof(Uint32));
-        //SDL_RenderCopy(wolf.renderer, wolf.texture, NULL, NULL);
-        //SDL_RenderPresent(wolf.renderer);
+        wolf.pixels[x + y * 640] = 0xfff000;
+        SDL_UpdateTexture(wolf.texture, NULL, wolf.pixels, 640 * sizeof(Uint32));
+        SDL_RenderCopy(wolf.renderer, wolf.texture, NULL, NULL);
+		drawMap(mapX, mapY, map, &wolf);
+        SDL_RenderPresent(wolf.renderer);
+		//SDL_RenderClear(wolf.renderer);
 	}
     destroy_sdl(wolf);
     return (0);
