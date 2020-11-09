@@ -1,2 +1,1 @@
-#define SDL_REVISION "hg-13609:34cc7d3b69d3"
-#define SDL_REVISION_NUMBER 13609
+/Users/mjoss/.brew/Cellar/sdl2/2.0.12_1/include/SDL2/SDL_revision.h
