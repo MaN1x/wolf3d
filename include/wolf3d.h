@@ -13,6 +13,7 @@
 # define SCREEN_WIDTH	800
 # include "SDL2/SDL.h"
 # include <unistd.h>
+# include <math.h>
 
 typedef struct			s_wolf3d
 {
