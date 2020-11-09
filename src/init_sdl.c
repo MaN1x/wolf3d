@@ -17,9 +17,11 @@ t_wolf3d		init_sdl()
     wolf.win = SDL_CreateWindow("SDL2 Pixel Drawing",
         SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, 0);
 	wolf.renderer = SDL_CreateRenderer(wolf.win, -1, 0);
-   	wolf.texture = SDL_CreateTexture(wolf.renderer,
-        SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, 640, 480);
-    wolf.pixels = malloc(sizeof(Uint32) * 640 * 480);//new Uint32[640 * 480];
+   // SDL_SetRenderDrawColor(wolf.renderer, 255, 255, 255, 255);
+    //SDL_RenderClear(wolf.renderer); // fill the scene with white
+   	//wolf.texture = SDL_CreateTexture(wolf.renderer,
+    //    SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, 640, 480);
+    //wolf.pixels = malloc(sizeof(Uint32) * 640 * 480);//new Uint32[640 * 480];
     //memset(wolf.pixels, 0, 640 * 480 * sizeof(Uint32));
 	return (wolf);
 }
