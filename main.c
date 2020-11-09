@@ -10,6 +10,11 @@
 #include "wolf3d.h"
 #include <stdio.h>
 
+void			draw_ray(int x, int y, )
+{
+	
+}
+
 void            draw_map(int mapX, int mapY, int map[8][8], t_wolf3d *wolf)
 {
    int x, y, xo, yo;
@@ -30,13 +35,13 @@ void            draw_map(int mapX, int mapY, int map[8][8], t_wolf3d *wolf)
 			color.g = 0;
 			if (map[x][y] == 1)
 			{
-				color.r = 0;
-				color.b = 255;
+				color.r = 255;
+				color.b = 0;
 			}
 			else
 			{
-				color.r = 255;
-				color.b = 0;	
+				color.r = 0;
+				color.b = 255;	
 			}
 			r.w = mapGridSquareSize;
     		r.h = mapGridSquareSize;
@@ -65,6 +70,9 @@ void            draw_player(t_wolf3d *wolf, int x, int y, int dx, int dy)
     color.g = 255;
     SDL_SetRenderDrawColor( wolf->renderer, color.r, color.g, color.b, 255);
     SDL_RenderFillRect(wolf->renderer, &r);
+	//wolf->pixels[x + y * 640] = 0xffffff;
+	//SDL_RenderClear(wolf->renderer);
+	//SDL_UpdateTexture(wolf->texture, NULL, wolf->pixels, 640 * sizeof(Uint32));
 
 	SDL_SetRenderDrawColor(wolf->renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
     SDL_RenderDrawLine(wolf->renderer, x, y, x + dx * 10, y + dy * 10);
@@ -72,7 +80,7 @@ void            draw_player(t_wolf3d *wolf, int x, int y, int dx, int dy)
 
 void			fill_background(t_wolf3d *wolf)
 {
-	SDL_SetRenderDrawColor( wolf->renderer, 0, 0, 0, 255);
+	SDL_SetRenderDrawColor( wolf->renderer, 128, 128, 128, 255);
 	SDL_RenderClear(wolf->renderer);
 }
 
