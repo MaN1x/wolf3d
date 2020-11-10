@@ -1,2 +1,2 @@
-include/SDL2/*
-lib
+#include/SDL2/*
+#lib
