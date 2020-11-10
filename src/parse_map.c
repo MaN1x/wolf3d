@@ -6,7 +6,7 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 16:00:08 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/09 20:33:09 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/10 20:58:37 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,7 +217,8 @@ int			parse_map(char *path, t_map *map)
 		free(map_tmp);
 		return (0);
 	}
-	printf("check map = %d\n", check_map(map_tmp));
+	if (check_map(map_tmp) == 0)
+		return (-1);
 	if (fill_struct_map(map, map_tmp) == -1)
 		return (0);
 	free(map_tmp);

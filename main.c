@@ -8,15 +8,16 @@
  */
 
 #include "wolf3d.h"
-//#include "libft.h"
+#include "map_parser.h"
+#include "libft.h"
 #include <stdio.h>
 
-void			draw_ray(int x, int y, )
-{
-	
-}
+//void			draw_ray(int x, int y, )
+//{
+//
+//}
 
-void            draw_map(int mapX, int mapY, int map[8][8], t_wolf3d *wolf)
+void            draw_map(t_map map, t_wolf3d *wolf)
 {
    int x, y, xo, yo;
 
@@ -25,16 +26,16 @@ void            draw_map(int mapX, int mapY, int map[8][8], t_wolf3d *wolf)
 	SDL_Rect r;
 	t_color color;
 
-    int mapGridSquareSize = 480 / mapX;
+    int mapGridSquareSize = 480 / map.width;
     int mapXOffset = (640 - 480) / 2;
     int mapYOffset = (480 - 480) / 2;
-    while (y < mapY)
+    while (y < map.height)
     {
 		x = 0;
-        while (x < mapX)
+        while (x < map.width)
         {
 			color.g = 0;
-			if (map[x][y] == 1)
+			if (map.map[x][y] == 1)
 			{
 				color.r = 255;
 				color.b = 0;
@@ -86,7 +87,7 @@ void			fill_background(t_wolf3d *wolf)
 }
 
 
-int             main()
+int             main(int argc, char **argv)
 {
     t_wolf3d	wolf;
     int			mapX = 8;
@@ -97,17 +98,16 @@ int             main()
 	float		player_dx;
 	float		player_dy;
 	float		player_alpha = 0;
+	int			map_status;
+	t_map		map;
 
-    int map[8][8] = {
-        {1, 1, 1, 1, 1, 1, 1, 1}, 
-        {1, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 1},
-        {1, 1, 0, 1, 0, 0, 0, 1},
-        {1, 1, 1, 0, 0, 0, 0, 1},
-        {1, 1, 0, 0, 0, 0, 0, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1}
-    };
+	if ((map_status = parse_map(argv[1], &map)) == -1)
+		ft_putstr("wrong map\n");
+	else if (map_status == 0)
+	{
+		ft_putstr("syscall err\n");
+		return (0);
+	}
 	player_dx = cos(player_alpha) * 10;
 	player_dy = sin(player_alpha) * 10;
     wolf = init_sdl();
@@ -149,7 +149,7 @@ int             main()
     	}
 		fill_background(&wolf);
 		draw_player(&wolf, player_x, player_y, player_dx, player_dy);
-		draw_map(mapX, mapY, map, &wolf);
+		draw_map(map, &wolf);
         SDL_RenderPresent(wolf.renderer);
 	}
     destroy_sdl(wolf);

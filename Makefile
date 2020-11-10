@@ -1,6 +1,6 @@
 NAME	=	wolf3d
 
-SRC		=	init_sdl.c put_pixel_sdl.c destroy_sdl.c
+SRC		=	init_sdl.c put_pixel_sdl.c destroy_sdl.c parse_map.c
 
 $(NAME): all
 
