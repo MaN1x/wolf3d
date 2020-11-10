@@ -1,6 +1,10 @@
 # sdl pkg-config source file
 
+<<<<<<< HEAD
+prefix=/Users/npetrell/.brew
+=======
 prefix=/Users/mjoss/.brew
+>>>>>>> master
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
