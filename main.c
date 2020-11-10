@@ -8,6 +8,7 @@
  */
 
 #include "wolf3d.h"
+//#include "libft.h"
 #include <stdio.h>
 
 void			draw_ray(int x, int y, )
