@@ -47,8 +47,8 @@ void            draw_map(t_map map, t_wolf3d *wolf)
 			}
 			r.w = mapGridSquareSize;
     		r.h = mapGridSquareSize;
-			r.x = (mapGridSquareSize * x) + mapXOffset;
-			r.y = (mapGridSquareSize * y) + mapYOffset;
+			r.x = (mapGridSquareSize * y) + mapXOffset;
+			r.y = (mapGridSquareSize * x) + mapYOffset;
 
 			SDL_SetRenderDrawColor( wolf->renderer, color.r, color.g, color.b, 255);
 			SDL_RenderDrawRect(wolf->renderer, &r);
