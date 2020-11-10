@@ -12,10 +12,62 @@
 #include "libft.h"
 #include <stdio.h>
 
-//void			draw_ray(int x, int y, )
-//{
-//
-//}
+void			draw_ray(t_map map, t_wolf3d *wolf, float x, float y, float player_alpha)
+{
+    int         count_rays;
+    int         ray;
+    int         step_of_ray;
+    int         count_steps;
+    float       ray_x;
+    float       ray_y;
+    float       delta_ray_x;
+    float       delta_ray_y;
+    float       ray_alpha;
+    t_color     color;
+    int         size_map;
+
+    count_rays = 1;
+    count_steps = 8;
+    ray = 0;
+    ray_alpha = player_alpha;
+    color.r = 255;
+    color.b = 255;
+    color.g = 0;
+    size_map = map.height * map.width;
+    while (ray < count_rays)
+    {
+        step_of_ray = 0;
+        if (ray_alpha > M_PI)
+        {
+            ray_y = ((int)(y / size_map)) * size_map - 0.0001f;
+            ray_x = (ray_y - y) * atan(ray_alpha) + x;
+            delta_ray_y = -size_map;
+            delta_ray_x = -delta_ray_y * atan(ray_alpha);
+        }
+        else if (ray_alpha < M_PI)
+        {
+            ray_y = ((int)(y / size_map)) * size_map + size_map;
+            ray_x = (ray_y - y) * atan(ray_alpha) + x;
+            delta_ray_y = size_map;
+            delta_ray_x = -delta_ray_y * atan(ray_alpha);
+        }
+        else if (ray_alpha == 0 || ray_alpha == M_PI)
+        {
+            delta_ray_x = x;
+            delta_ray_y = y;
+            step_of_ray = count_steps;
+        }
+        while (step_of_ray < count_steps)
+        {
+            ray_x += delta_ray_x;
+            ray_y += delta_ray_y;
+            step_of_ray++;
+        }
+        SDL_SetRenderDrawColor(wolf->renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
+        SDL_RenderDrawLine(wolf->renderer, x, y, ray_x, ray_y);
+        ray++;
+    }
+}
 
 void            draw_map(t_map map, t_wolf3d *wolf)
 {
@@ -26,13 +78,13 @@ void            draw_map(t_map map, t_wolf3d *wolf)
 	SDL_Rect r;
 	t_color color;
 
-    int mapGridSquareSize = 480 / map.width;
-    int mapXOffset = (640 - 480) / 2;
-    int mapYOffset = (480 - 480) / 2;
-    while (y < map.height)
+    int mapGridSquareSize = SCREEN_HEIGHT / map.width;
+    int mapXOffset = (SCREEN_WIDTH - SCREEN_HEIGHT) / 2;
+    int mapYOffset = (SCREEN_HEIGHT - SCREEN_HEIGHT) / 2;
+    while (y < map.width)
     {
 		x = 0;
-        while (x < map.width)
+        while (x < map.height)
         {
 			color.g = 0;
 			if (map.map[x][y] == 1)
@@ -72,9 +124,9 @@ void            draw_player(t_wolf3d *wolf, int x, int y, int dx, int dy)
     color.g = 255;
     SDL_SetRenderDrawColor( wolf->renderer, color.r, color.g, color.b, 255);
     SDL_RenderFillRect(wolf->renderer, &r);
-	//wolf->pixels[x + y * 640] = 0xffffff;
+	//wolf->pixels[x + y * SCREEN_WIDTH] = 0xffffff;
 	//SDL_RenderClear(wolf->renderer);
-	//SDL_UpdateTexture(wolf->texture, NULL, wolf->pixels, 640 * sizeof(Uint32));
+	//SDL_UpdateTexture(wolf->texture, NULL, wolf->pixels, SCREEN_WIDTH * sizeof(Uint32));
 
 	SDL_SetRenderDrawColor(wolf->renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
     SDL_RenderDrawLine(wolf->renderer, x, y, x + dx * 10, y + dy * 10);
@@ -102,11 +154,14 @@ int             main(int argc, char **argv)
 	t_map		map;
 
 	if ((map_status = parse_map(argv[1], &map)) == -1)
+    {
 		ft_putstr("wrong map\n");
+        exit (0);
+    }
 	else if (map_status == 0)
 	{
 		ft_putstr("syscall err\n");
-		return (0);
+		exit (0);
 	}
 	player_dx = cos(player_alpha) * 10;
 	player_dy = sin(player_alpha) * 10;
@@ -148,8 +203,9 @@ int             main(int argc, char **argv)
             }
     	}
 		fill_background(&wolf);
-		draw_player(&wolf, player_x, player_y, player_dx, player_dy);
 		draw_map(map, &wolf);
+        draw_player(&wolf, player_x, player_y, player_dx, player_dy);
+        draw_ray(map, &wolf, player_x, player_y, player_alpha);
         SDL_RenderPresent(wolf.renderer);
 	}
     destroy_sdl(wolf);
@@ -157,8 +213,8 @@ int             main(int argc, char **argv)
 }
 
 /*
-	wolf.pixels[x + y * 640] = 0xfff000;
+	wolf.pixels[x + y * SCREEN_WIDTH] = 0xfff000;
 	SDL_RenderClear(wolf.renderer);
-	SDL_UpdateTexture(wolf.texture, NULL, wolf.pixels, 640 * sizeof(Uint32));
+	SDL_UpdateTexture(wolf.texture, NULL, wolf.pixels, SCREEN_WIDTH * sizeof(Uint32));
     SDL_RenderCopy(wolf.renderer, wolf.texture, NULL, NULL);
 */
