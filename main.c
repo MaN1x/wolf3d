@@ -57,7 +57,7 @@ int             main(int argc, char **argv)
             {
                 if (wolf.event.key.keysym.sym == SDLK_DOWN)
 				{
-					player_alpha -= 0.1;
+					player_alpha -= 0.1f;
 					if (player_alpha < 0)
 						player_alpha += 2 * M_PI;
 					player_dx = cos(player_alpha) * 5;
@@ -65,7 +65,7 @@ int             main(int argc, char **argv)
 				}
                 else if (wolf.event.key.keysym.sym == SDLK_UP)
 				{
-					player_alpha += 0.1;
+					player_alpha += 0.1f;
 					if (player_alpha > 2 * M_PI)
 						player_alpha -= 2 * M_PI;
 					player_dx = cos(player_alpha) * 5;
