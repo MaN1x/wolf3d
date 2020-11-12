@@ -1,6 +1,13 @@
 NAME	=	wolf3d
 
-SRC		=	init_sdl.c put_pixel_sdl.c destroy_sdl.c parse_map.c
+SRC		=	init_sdl.c \
+			put_pixel_sdl.c \
+			destroy_sdl.c \
+			parse_map.c \
+			draw_map.c \
+			draw_player.c \
+			ray_cast.c \
+
 
 $(NAME): all
 

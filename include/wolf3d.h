@@ -15,6 +15,7 @@
 # include "SDL2/SDL_image.h"
 # include <unistd.h>
 # include <math.h>
+# include "map_parser.h"
 
 typedef struct			s_wolf3d
 {
@@ -38,5 +39,9 @@ typedef struct			s_color
 t_wolf3d				init_sdl();
 void    				put_pixel_sdl(t_wolf3d wolf, int x, int y, t_color color);
 void					destroy_sdl(t_wolf3d wolf);
+
+void					draw_map(t_map map, t_wolf3d *wolf);
+void            		draw_player(t_wolf3d *wolf, int x, int y, int dx, int dy);
+void					draw_ray(t_map map, t_wolf3d *wolf, int x, int y, float player_alpha);
 
 #endif
