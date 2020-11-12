@@ -1,0 +1,1 @@
+/usr/local/Cellar/sdl2_image/2.0.5/include/SDL2/SDL_image.h

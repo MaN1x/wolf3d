@@ -23,5 +23,7 @@ t_wolf3d		init_sdl()
         SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, SCREEN_WIDTH, SCREEN_HEIGHT);
     wolf.pixels = malloc(sizeof(Uint32) * SCREEN_WIDTH * SCREEN_HEIGHT);//new Uint32[SCREEN_WIDTH * 480];
     memset(wolf.pixels, 0, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
+    wolf.image = IMG_Load("wall.png");
+	wolf.texture = SDL_CreateTextureFromSurface(wolf.renderer, wolf.image);
 	return (wolf);
 }

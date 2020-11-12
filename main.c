@@ -12,7 +12,12 @@
 #include "libft.h"
 #include <stdio.h>
 
-void			draw_ray(t_map map, t_wolf3d *wolf, float x, float y, float player_alpha)
+float			dist(x, y, hx, hy, alpha)
+{
+	return (sqrt((hx - x) * (hx - x) + (hy - y) * (hy - y)));
+}
+
+void			draw_ray(t_map map, t_wolf3d *wolf, int x, int y, float player_alpha)
 {
     int         count_rays;
     int         ray;
@@ -25,33 +30,49 @@ void			draw_ray(t_map map, t_wolf3d *wolf, float x, float y, float player_alpha)
     float       ray_alpha;
     t_color     color;
     int         size_map;
+    int			mapx;
+    int			mapy;
+    int			mapp;
+    int			distT;
 
-    count_rays = 1;
+
+    count_rays = 60;
     count_steps = 8;
     ray = 0;
-    ray_alpha = player_alpha;
+    ray_alpha = player_alpha - M_PI * 30 / 180;
+	if (ray_alpha < 0)
+	{
+		ray_alpha += 2 * M_PI;
+	}
+	if (ray_alpha > 2 * M_PI)
+	{
+		ray_alpha -= 2 * M_PI;
+	}
     color.r = 255;
-    color.b = 255;
-    color.g = 0;
+    color.b = 245;
+    color.g = 11;
     size_map = map.height * map.width;
     while (ray < count_rays)
     {
         step_of_ray = 0;
+        float distH = 1000000;
+        float hx = x;
+        float hy = y;
         if (ray_alpha > M_PI)
         {
-            ray_y = ((int)(y / size_map)) * size_map - 0.0001f;
-            ray_x = (ray_y - y) * atan(ray_alpha) + x;
+            ray_y = ((int)y / size_map) * size_map - 0.0001;
+            ray_x = (y - ray_y) * (-1 / tan(ray_alpha)) + x;
             delta_ray_y = -size_map;
-            delta_ray_x = -delta_ray_y * atan(ray_alpha);
+            delta_ray_x = -delta_ray_y * (-1 / tan(ray_alpha));
         }
-        else if (ray_alpha < M_PI)
+        if (ray_alpha < M_PI)
         {
-            ray_y = ((int)(y / size_map)) * size_map + size_map;
-            ray_x = (ray_y - y) * atan(ray_alpha) + x;
+            ray_y = ((int)y / size_map) * size_map + size_map;
+            ray_x = (y - ray_y) * (-1 / tan(ray_alpha)) + x;
             delta_ray_y = size_map;
-            delta_ray_x = -delta_ray_y * atan(ray_alpha);
+            delta_ray_x = -delta_ray_y * (-1 / tan(ray_alpha));
         }
-        else if (ray_alpha == 0 || ray_alpha == M_PI)
+        if (ray_alpha == 0 || ray_alpha == M_PI)
         {
             delta_ray_x = x;
             delta_ray_y = y;
@@ -59,13 +80,107 @@ void			draw_ray(t_map map, t_wolf3d *wolf, float x, float y, float player_alpha)
         }
         while (step_of_ray < count_steps)
         {
-            ray_x += delta_ray_x;
-            ray_y += delta_ray_y;
-            step_of_ray++;
+            mapx = (int)ray_x / size_map;
+            mapy = (int)ray_y / size_map;
+            if (mapx < map.height && mapy < map.width  && mapx >= 0 && mapy >= 0 && map.map[mapx][mapy] == 1)
+            {
+				hx = ray_x;
+				hy = ray_y;
+				distH = dist(x, y, hx, hy, ray_alpha);
+                step_of_ray = count_steps;
+            }
+            else
+            {
+                ray_x += delta_ray_x;
+                ray_y += delta_ray_y;
+                step_of_ray++;
+            }
         }
-        SDL_SetRenderDrawColor(wolf->renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
+        step_of_ray = 0;
+        float distV = 1000000;
+        float vx = x;
+        float vy = y;
+        if (ray_alpha > M_PI_2 && ray_alpha < 3 *  M_PI_2)
+        {
+            ray_x = ((int)x / size_map) * size_map - 0.0001;
+            ray_y = (x - ray_x) * (-tan(ray_alpha)) + y;
+            delta_ray_x = -size_map;
+            delta_ray_y = -delta_ray_x * (-tan(ray_alpha));
+        }
+        if (ray_alpha < M_PI_2 || ray_alpha > 3 *  M_PI_2)
+        {
+            ray_x = ((int)x / size_map) * size_map + size_map;
+            ray_y  = (x - ray_x) * (-tan(ray_alpha)) + y;
+            delta_ray_x = size_map;
+            delta_ray_y = -delta_ray_x * (-tan(ray_alpha));
+        }
+        if (ray_alpha == 0 || ray_alpha == M_PI)
+        {
+            delta_ray_x = x;
+            delta_ray_y = y;
+            step_of_ray = count_steps;
+        }
+        while (step_of_ray < count_steps)
+        {
+            mapx = (int)ray_x / size_map;
+            mapy = (int)ray_y / size_map;
+            if (mapx < map.height && mapy < map.width  && mapx >= 0 && mapy >= 0 && map.map[mapx][mapy] == 1)
+            {
+				vx = ray_x;
+				vy = ray_y;
+				distV = dist(x, y, vx, vy, ray_alpha);
+                step_of_ray = count_steps;
+            }
+            else
+            {
+                ray_x += delta_ray_x;
+                ray_y += delta_ray_y;
+                step_of_ray++;
+            }
+        }
+		if (distV < distH)
+		{
+			ray_x = vx;
+			ray_y = vy;
+			distT = distV;
+        	SDL_SetRenderDrawColor(wolf->renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+		}
+		if (distH < distV)
+		{
+			ray_x = hx;
+			ray_y = hy;
+			distT = distH;
+        	SDL_SetRenderDrawColor(wolf->renderer, 255, 245, 11, SDL_ALPHA_OPAQUE);
+		}
         SDL_RenderDrawLine(wolf->renderer, x, y, ray_x, ray_y);
+
+		float ca = player_alpha - ray_alpha;
+		if (ca < 0)
+		{
+			ca += 2 * M_PI;
+		}
+		if (ca > 2 * M_PI)
+		{
+			ca -= 2 * M_PI;
+		}
+		distT = distT * cos(ca);
+		float lineH = (size_map * 320) / distT;
+		if (lineH > 320)
+		{
+			lineH = 320;
+		}
+		float lineO = 160 - lineH / 2;
+		SDL_RenderDrawLine(wolf->renderer, ray * 8 + 530, lineO, ray * 8 + 530, lineH + lineO);
         ray++;
+		ray_alpha += M_PI / 180;
+		if (ray_alpha < 0)
+		{
+			ray_alpha += 2 * M_PI;
+		}
+		if (ray_alpha > 2 * M_PI)
+		{
+			ray_alpha -= 2 * M_PI;
+		}
     }
 }
 
@@ -78,32 +193,31 @@ void            draw_map(t_map map, t_wolf3d *wolf)
 	SDL_Rect r;
 	t_color color;
 
-    int mapGridSquareSize = SCREEN_HEIGHT / map.width;
-    int mapXOffset = (SCREEN_WIDTH - SCREEN_HEIGHT) / 2;
-    int mapYOffset = (SCREEN_HEIGHT - SCREEN_HEIGHT) / 2;
+    int map_size = map.width * map.height;
     while (y < map.width)
     {
 		x = 0;
         while (x < map.height)
         {
-			color.g = 0;
 			if (map.map[x][y] == 1)
 			{
-				color.r = 255;
+				color.r = 84;
+				color.g = 57;
 				color.b = 0;
 			}
 			else
 			{
-				color.r = 0;
-				color.b = 255;	
+				color.r = 117;
+				color.g = 77;
+				color.b = 0;	
 			}
-			r.w = mapGridSquareSize;
-    		r.h = mapGridSquareSize;
-			r.x = (mapGridSquareSize * y) + mapXOffset;
-			r.y = (mapGridSquareSize * x) + mapYOffset;
+			r.w = map_size;
+    		r.h = map_size;
+			r.x = x * map_size;
+			r.y = y * map_size;
 
-			SDL_SetRenderDrawColor( wolf->renderer, color.r, color.g, color.b, 255);
-			SDL_RenderDrawRect(wolf->renderer, &r);
+			SDL_SetRenderDrawColor( wolf->renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
+			SDL_RenderFillRect(wolf->renderer, &r);
             x++;
         }
         y++;
@@ -129,7 +243,7 @@ void            draw_player(t_wolf3d *wolf, int x, int y, int dx, int dy)
 	//SDL_UpdateTexture(wolf->texture, NULL, wolf->pixels, SCREEN_WIDTH * sizeof(Uint32));
 
 	SDL_SetRenderDrawColor(wolf->renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
-    SDL_RenderDrawLine(wolf->renderer, x, y, x + dx * 10, y + dy * 10);
+    SDL_RenderDrawLine(wolf->renderer, x, y, x + dx * 5, y + dy * 5);
 }
 
 void			fill_background(t_wolf3d *wolf)
@@ -163,8 +277,8 @@ int             main(int argc, char **argv)
 		ft_putstr("syscall err\n");
 		exit (0);
 	}
-	player_dx = cos(player_alpha) * 10;
-	player_dy = sin(player_alpha) * 10;
+	player_dx = cos(player_alpha) * 5;
+	player_dy = sin(player_alpha) * 5;
     wolf = init_sdl();
     wolf.is_running = 1;
     while (wolf.is_running) {
@@ -174,21 +288,21 @@ int             main(int argc, char **argv)
             }
             if (wolf.event.type == SDL_KEYDOWN)
             {
-                if (wolf.event.key.keysym.sym == SDLK_UP)
+                if (wolf.event.key.keysym.sym == SDLK_DOWN)
 				{
-					player_alpha -= 0.1f;
+					player_alpha -= 0.1;
 					if (player_alpha < 0)
 						player_alpha += 2 * M_PI;
-					player_dx = cos(player_alpha) * 10;
-					player_dy = sin(player_alpha) * 10;
+					player_dx = cos(player_alpha) * 5;
+					player_dy = sin(player_alpha) * 5;
 				}
-                else if (wolf.event.key.keysym.sym == SDLK_DOWN)
+                else if (wolf.event.key.keysym.sym == SDLK_UP)
 				{
-					player_alpha += 0.1f;
+					player_alpha += 0.1;
 					if (player_alpha > 2 * M_PI)
 						player_alpha -= 2 * M_PI;
-					player_dx = cos(player_alpha) * 10;
-					player_dy = sin(player_alpha) * 10;
+					player_dx = cos(player_alpha) * 5;
+					player_dy = sin(player_alpha) * 5;
 				}
                 else if (wolf.event.key.keysym.sym == SDLK_RIGHT)
 				{
@@ -204,8 +318,11 @@ int             main(int argc, char **argv)
     	}
 		fill_background(&wolf);
 		draw_map(map, &wolf);
-        draw_player(&wolf, player_x, player_y, player_dx, player_dy);
+    	//SDL_RenderCopy(wolf.renderer, wolf.texture, NULL, NULL);
         draw_ray(map, &wolf, player_x, player_y, player_alpha);
+        draw_player(&wolf, player_x, player_y, player_dx, player_dy);
+		//SDL_RenderClear(wolf.renderer);
+		//SDL_UpdateTexture(wolf.texture, NULL, wolf.pixels, SCREEN_WIDTH * sizeof(Uint32));
         SDL_RenderPresent(wolf.renderer);
 	}
     destroy_sdl(wolf);

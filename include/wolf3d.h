@@ -9,9 +9,10 @@
 
 #ifndef WOLF3D_H
 # define WOLF3D_H
-# define SCREEN_HEIGHT	600
-# define SCREEN_WIDTH	800
+# define SCREEN_HEIGHT	720
+# define SCREEN_WIDTH	1024
 # include "SDL2/SDL.h"
+# include "SDL2/SDL_image.h"
 # include <unistd.h>
 # include <math.h>
 
@@ -20,7 +21,8 @@ typedef struct			s_wolf3d
 	SDL_Window			*win;
 	SDL_Event			event;
 	SDL_Renderer		*renderer;
-	SDL_Surface			*surface;
+
+	SDL_Surface			*image;
 	SDL_Texture			*texture;
 	Uint32				*pixels;
 	int					is_running;
