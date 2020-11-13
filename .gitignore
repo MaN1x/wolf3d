@@ -1,5 +1,2 @@
-include/SDL2/
-lib/*
-.DS_Store/
-.idea/
-wolf3d.dSYM/
+#include/SDL2/*
+#lib
