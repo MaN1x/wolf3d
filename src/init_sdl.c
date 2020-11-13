@@ -13,17 +13,15 @@ t_wolf3d		init_sdl()
 {
 	t_wolf3d	wolf;
 
-	SDL_Init(SDL_INIT_VIDEO);
+	SDL_Init(SDL_INIT_AUDIO);
     wolf.win = SDL_CreateWindow("SDL2 Pixel Drawing",
         SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
-	wolf.renderer = SDL_CreateRenderer(wolf.win, -1, 0);
-   // SDL_SetRenderDrawColor(wolf.renderer, 255, 255, 255, 255);
-    //SDL_RenderClear(wolf.renderer); // fill the scene with white
-   	wolf.texture = SDL_CreateTexture(wolf.renderer,
-        SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, SCREEN_WIDTH, SCREEN_HEIGHT);
-    wolf.pixels = malloc(sizeof(Uint32) * SCREEN_WIDTH * SCREEN_HEIGHT);//new Uint32[SCREEN_WIDTH * 480];
-    memset(wolf.pixels, 0, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
-    wolf.image = IMG_Load("wall.png");
-	wolf.texture = SDL_CreateTextureFromSurface(wolf.renderer, wolf.image);
+    if (Mix_OpenAudio(44100, AUDIO_F32SYS, 2, 2048) < 0)
+    {
+        //ft_putstr("error");
+        exit(0);
+    }
+    wolf.sound.bgm = Mix_LoadMUS("1.wav");
+    wolf.sound.sound_effect = Mix_LoadWAV("Cuica-1.wav");
 	return (wolf);
 }

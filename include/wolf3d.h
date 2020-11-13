@@ -12,17 +12,23 @@
 # define SCREEN_HEIGHT	720
 # define SCREEN_WIDTH	1024
 # include "SDL2/SDL.h"
-# include "SDL2/SDL_image.h"
+# include "SDL2/SDL_mixer.h"
 # include <unistd.h>
 # include <math.h>
 # include "map_parser.h"
+
+typedef struct			s_sounds
+{
+	Mix_Music			*bgm;
+	Mix_Chunk			*sound_effect;
+}						t_sounds;
 
 typedef struct			s_wolf3d
 {
 	SDL_Window			*win;
 	SDL_Event			event;
 	SDL_Renderer		*renderer;
-
+	t_sounds			sound;
 	SDL_Surface			*image;
 	SDL_Texture			*texture;
 	Uint32				*pixels;
