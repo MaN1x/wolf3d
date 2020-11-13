@@ -6,7 +6,7 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 04:07:18 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/13 04:17:11 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/13 04:27:24 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int             main(int argc, char **argv)
                 wolf.is_running = 0;
             if (wolf.event.type == SDL_KEYDOWN)
             {
-                if (wolf.event.key.keysym.sym == SDLK_DOWN)
+                if (wolf.event.key.keysym.sym == SDLK_LEFT)
 				{
 					player_alpha -= 0.1f;
 					if (player_alpha < 0)
@@ -71,7 +71,7 @@ int             main(int argc, char **argv)
 					player_dx = cos(player_alpha) * 5;
 					player_dy = sin(player_alpha) * 5;
 				}
-                else if (wolf.event.key.keysym.sym == SDLK_UP)
+                else if (wolf.event.key.keysym.sym == SDLK_RIGHT)
 				{
 					player_alpha += 0.1f;
 					if (player_alpha > 2 * M_PI)
@@ -79,12 +79,12 @@ int             main(int argc, char **argv)
 					player_dx = cos(player_alpha) * 5;
 					player_dy = sin(player_alpha) * 5;
 				}
-                else if (wolf.event.key.keysym.sym == SDLK_RIGHT)
+                else if (wolf.event.key.keysym.sym == SDLK_UP)
 				{
                     player_x += player_dx;
 					player_y += player_dy;
 				}
-                else if (wolf.event.key.keysym.sym == SDLK_LEFT)
+                else if (wolf.event.key.keysym.sym == SDLK_DOWN)
 				{
 					player_x -= player_dx;
                     player_y -= player_dy;
