@@ -11,8 +11,13 @@
 
 void	destroy_sdl(t_wolf3d wolf)
 {
+    Mix_FreeChunk(wolf.sound.sound_effect);
+    Mix_FreeMusic(wolf.sound.bgm);
+    wolf.sound.bgm = NULL;
+    wolf.sound.sound_effect = NULL;
 	SDL_DestroyTexture(wolf.texture);
     SDL_DestroyRenderer(wolf.renderer);
     SDL_DestroyWindow(wolf.win);
+    Mix_Quit();
     SDL_Quit();
 }
