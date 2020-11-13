@@ -11,6 +11,7 @@
 # define WOLF3D_H
 # define SCREEN_HEIGHT	720
 # define SCREEN_WIDTH	1024
+# define VISIBILITY_RANGE 8
 # include "SDL2/SDL.h"
 # include "SDL2/SDL_image.h"
 # include <unistd.h>
@@ -42,6 +43,6 @@ void					destroy_sdl(t_wolf3d wolf);
 
 void					draw_map(t_map map, t_wolf3d *wolf);
 void            		draw_player(t_wolf3d *wolf, int x, int y, int dx, int dy);
-void					draw_ray(t_map map, t_wolf3d *wolf, int x, int y, float player_alpha);
+void					draw_rays(t_map map, t_wolf3d *wolf, float x, float y, float player_alpha);
 
 #endif
