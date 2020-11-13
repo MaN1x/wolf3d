@@ -1,11 +1,14 @@
-/*
- * Filename: /Users/Student/mandelbrot/main.c
- * Path: /Users/Student/mandelbrot
- * Created Date: Tuesday, May 12th 2020, 9:35:08 pm
- * Author: Student
- * 
- * Copyright (c) 2020 Your Company
- */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/13 04:07:18 by mjoss             #+#    #+#             */
+/*   Updated: 2020/11/13 04:17:11 by mjoss            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "wolf3d.h"
 #include "libft.h"
@@ -48,11 +51,16 @@ int             main(int argc, char **argv)
 	player_x = map.player_position.x * map.width * map.height;
 	player_y = map.player_position.y * map.width * map.height;
     wolf.is_running = 1;
-    while (wolf.is_running) {
-        while (SDL_PollEvent(&wolf.event)) {
-            if (wolf.event.type == SDL_QUIT || wolf.event.key.keysym.sym == SDLK_ESCAPE) {
+	fill_background(&wolf);
+	draw_map(map, &wolf);
+	draw_rays(map, &wolf, player_x, player_y, player_alpha);
+	draw_player(&wolf, player_x, player_y, player_dx, player_dy);
+    while (wolf.is_running)
+    {
+        while (SDL_PollEvent(&wolf.event))
+        {
+            if (wolf.event.type == SDL_QUIT || wolf.event.key.keysym.sym == SDLK_ESCAPE)
                 wolf.is_running = 0;
-            }
             if (wolf.event.type == SDL_KEYDOWN)
             {
                 if (wolf.event.key.keysym.sym == SDLK_DOWN)
@@ -81,13 +89,13 @@ int             main(int argc, char **argv)
 					player_x -= player_dx;
                     player_y -= player_dy;
 				}
+				fill_background(&wolf);
+				draw_map(map, &wolf);
+				draw_rays(map, &wolf, player_x, player_y, player_alpha);
+				draw_player(&wolf, player_x, player_y, player_dx, player_dy);
             }
     	}
-		fill_background(&wolf);
-		draw_map(map, &wolf);
     	//SDL_RenderCopy(wolf.renderer, wolf.texture, NULL, NULL);
-        draw_ray(map, &wolf, player_x, player_y, player_alpha);
-        draw_player(&wolf, player_x, player_y, player_dx, player_dy);
 		//SDL_RenderClear(wolf.renderer);
 		//SDL_UpdateTexture(wolf.texture, NULL, wolf.pixels, SCREEN_WIDTH * sizeof(Uint32));
         SDL_RenderPresent(wolf.renderer);
