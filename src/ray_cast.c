@@ -6,14 +6,14 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 04:07:48 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/13 17:42:55 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/13 17:56:43 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 #include <math.h>
 
-void		draw_pseudo_3d(t_wolf3d *wolf, int ray_len, float i, t_map map)
+void		draw_pseudo_3d(t_wolf3d *wolf, int ray_len, float i, float player_angle, float ray_angle, t_map map)
 {
 	int map_size;
 	int horisontal_line_size;
@@ -21,7 +21,7 @@ void		draw_pseudo_3d(t_wolf3d *wolf, int ray_len, float i, t_map map)
 	int horisontal_line_finish;
 
 	map_size = map.width * map.height;
-	horisontal_line_size = (float)SCREEN_HEIGHT / ray_len * map_size;
+	horisontal_line_size = (float)SCREEN_HEIGHT / (ray_len * cos(ray_angle - player_angle)) * map_size;
 	horisontal_line_start = (SCREEN_HEIGHT - horisontal_line_size) / 2;
 	horisontal_line_finish = horisontal_line_start + horisontal_line_size;
 	SDL_SetRenderDrawColor(wolf->renderer, 255, 245, 11, 255);
@@ -29,7 +29,7 @@ void		draw_pseudo_3d(t_wolf3d *wolf, int ray_len, float i, t_map map)
 					   i + map.width * map_size, horisontal_line_finish);
 }
 
-int			draw_ray_map(t_map map, t_wolf3d *wolf, float x, float y, float player_angle)
+int			draw_ray_map(t_map map, t_wolf3d *wolf, float x, float y, float ray_angle)
 {
 	int ray_x;
 	int ray_y;
@@ -40,8 +40,8 @@ int			draw_ray_map(t_map map, t_wolf3d *wolf, float x, float y, float player_ang
 	size_map = map.width * map.height;
 	while (ray_len < VISIBILITY_RANGE * size_map)
 	{
-		ray_x = x + ray_len * cos(player_angle);
-		ray_y = y + ray_len * sin(player_angle);
+		ray_x = x + ray_len * cos(ray_angle);
+		ray_y = y + ray_len * sin(ray_angle);
 		if ((ray_x >= 0 && ray_x / size_map < map.width) && (ray_y >= 0 && ray_y / size_map < map.height) &&
 			map.map[ray_x / size_map][ray_y / size_map] == 1)
 			break;
@@ -71,7 +71,7 @@ void			draw_rays(t_map map, t_wolf3d *wolf, float x, float y, float player_angle
 	while (i < SCREEN_WIDTH)
 	{
 		ray_len = draw_ray_map(map, wolf, x, y, player_angle - fov / 2 + i * angle_value);
-		draw_pseudo_3d(wolf, ray_len, i, map);
+		draw_pseudo_3d(wolf, ray_len, i, player_angle, player_angle - fov / 2 + i * angle_value,  map);
 		i++;
 	}
 }
