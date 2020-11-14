@@ -55,7 +55,6 @@ int             main(int argc, char **argv)
 	draw_map(map, &wolf);
 	draw_rays(map, &wolf, player_x, player_y, player_alpha);
 	draw_player(&wolf, player_x, player_y, player_dx, player_dy);
-    wolf.texr.x = player_x; wolf.texr.y = player_y; wolf.texr.w = 600 / 4; wolf.texr.h = 600 /4;
     while (wolf.is_running)
     {
 		//SDL_RenderClear (wolf.renderer);
@@ -99,6 +98,7 @@ int             main(int argc, char **argv)
 				draw_player(&wolf, player_x, player_y, player_dx, player_dy);
             }
     	}
+    	wolf.texr.x = player_x; wolf.texr.y = player_y; wolf.texr.w = 600 / 4; wolf.texr.h = 600 /4;
 		SDL_RenderCopy(wolf.renderer, wolf.texture, NULL, &wolf.texr);
 		SDL_RenderPresent(wolf.renderer);
 	}
