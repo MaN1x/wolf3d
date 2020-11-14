@@ -16,8 +16,8 @@ t_wolf3d		init_sdl()
 	SDL_Init(SDL_INIT_EVERYTHING);
     wolf.win = SDL_CreateWindow("SDL2 Pixel Drawing",
         SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-	wolf.renderer = SDL_CreateRenderer(wolf.win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    wolf.screen = SDL_GetWindowSurface(wolf.win);
+	wolf.renderer = SDL_CreateRenderer(wolf.win, -1, 0);
+    //wolf.screen = SDL_GetWindowSurface(wolf.win);
    // SDL_SetRenderDrawColor(wolf.renderer, 255, 255, 255, 255);
     //SDL_RenderClear(wolf.renderer); // fill the scene with white
    //	wolf.texture = SDL_CreateTexture(wolf.renderer,
@@ -32,6 +32,6 @@ t_wolf3d		init_sdl()
 	//wolf.texture = SDL_CreateTextureFromSurface(wolf.renderer, wolf.image);
     int w, h;
     wolf.texture = IMG_LoadTexture(wolf.renderer, "wall.png");
-	//SDL_QueryTexture(wolf.texture, NULL, NULL, &w, &h);
+	SDL_QueryTexture(wolf.texture, NULL, NULL, &w, &h);
 	return (wolf);
 }

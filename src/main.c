@@ -51,7 +51,7 @@ int             main(int argc, char **argv)
 	player_x = map.player_position.x * map.width * map.height;
 	player_y = map.player_position.y * map.width * map.height;
     wolf.is_running = 1;
-	//fill_background(&wolf);
+	fill_background(&wolf);
 	draw_map(map, &wolf);
 	draw_rays(map, &wolf, player_x, player_y, player_alpha);
 	draw_player(&wolf, player_x, player_y, player_dx, player_dy);
@@ -92,7 +92,7 @@ int             main(int argc, char **argv)
 					player_x -= player_dx;
                     player_y -= player_dy;
 				}
-				//fill_background(&wolf);
+				fill_background(&wolf);
 				draw_map(map, &wolf);
 				draw_rays(map, &wolf, player_x, player_y, player_alpha);
 				draw_player(&wolf, player_x, player_y, player_dx, player_dy);
