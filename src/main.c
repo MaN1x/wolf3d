@@ -51,12 +51,16 @@ int             main(int argc, char **argv)
 	player_x = map.player_position.x * map.width * map.height;
 	player_y = map.player_position.y * map.width * map.height;
     wolf.is_running = 1;
-	fill_background(&wolf);
+	//fill_background(&wolf);
 	draw_map(map, &wolf);
 	draw_rays(map, &wolf, player_x, player_y, player_alpha);
 	draw_player(&wolf, player_x, player_y, player_dx, player_dy);
+    wolf.texr.x = player_x; wolf.texr.y = player_y; wolf.texr.w = 600 / 4; wolf.texr.h = 600 /4;
     while (wolf.is_running)
     {
+		//SDL_RenderClear (wolf.renderer);
+
+		 //SDL_RenderClear (wolf.renderer);
         while (SDL_PollEvent(&wolf.event))
         {
             if (wolf.event.type == SDL_QUIT || wolf.event.key.keysym.sym == SDLK_ESCAPE)
@@ -89,16 +93,14 @@ int             main(int argc, char **argv)
 					player_x -= player_dx;
                     player_y -= player_dy;
 				}
-				fill_background(&wolf);
+				//fill_background(&wolf);
 				draw_map(map, &wolf);
 				draw_rays(map, &wolf, player_x, player_y, player_alpha);
 				draw_player(&wolf, player_x, player_y, player_dx, player_dy);
             }
     	}
-    	//SDL_RenderCopy(wolf.renderer, wolf.texture, NULL, NULL);
-		//SDL_RenderClear(wolf.renderer);
-		//SDL_UpdateTexture(wolf.texture, NULL, wolf.pixels, SCREEN_WIDTH * sizeof(Uint32));
-        SDL_RenderPresent(wolf.renderer);
+		SDL_RenderCopy(wolf.renderer, wolf.texture, NULL, &wolf.texr);
+		SDL_RenderPresent(wolf.renderer);
 	}
     destroy_sdl(wolf);
     return (0);

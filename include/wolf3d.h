@@ -23,9 +23,10 @@ typedef struct			s_wolf3d
 	SDL_Window			*win;
 	SDL_Event			event;
 	SDL_Renderer		*renderer;
-
+	SDL_Surface			*screen;
 	SDL_Surface			*image;
 	SDL_Texture			*texture;
+	SDL_Rect texr;
 	Uint32				*pixels;
 	int					is_running;
 }						t_wolf3d;
