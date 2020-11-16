@@ -36,7 +36,7 @@ $(OBJ_DIR):
 	mkdir $(OBJ_DIR)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	gcc -I include -I libft/includes -g -o $@ -c $<
+	gcc -I include -I libft/includes -o $@ -c $<
 
 clean:
 	rm -rf $(OBJ_DIR)

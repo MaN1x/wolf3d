@@ -123,8 +123,8 @@ static void	from_char2struct(t_map *map, char *map_tmp)
 		{
 			if (*map_tmp == PLAYER_CHARACTER)
 			{
-				map->player_position.x = i;
-				map->player_position.y = j;
+				map->player_position.x = i + 1;
+				map->player_position.y = j + 1;
 				*map_tmp = '0';
 			}
 			if (!ft_isdigit(*map_tmp))

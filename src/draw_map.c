@@ -15,7 +15,7 @@ void            draw_map(t_map map, t_wolf3d *wolf)
 		x = 0;
         while (x < map.height)
         {
-			if (map.map[y][x] == 1)
+			if (map.map[x][y] == 1)
 			{
 				color.r = 84;
 				color.g = 57;
