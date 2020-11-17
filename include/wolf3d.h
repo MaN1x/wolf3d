@@ -1,11 +1,14 @@
-/*
- * Filename: /Users/Student/mandelbrot/include/wolf3d.h
- * Path: /Users/Student/mandelbrot/include
- * Created Date: Tuesday, May 12th 2020, 10:09:25 pm
- * Author: Student
- * 
- * Copyright (c) 2020 Your Company
- */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wolf3d.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/17 22:54:30 by mjoss             #+#    #+#             */
+/*   Updated: 2020/11/17 22:54:30 by mjoss            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef WOLF3D_H
 # define WOLF3D_H
@@ -36,6 +39,14 @@ typedef struct			s_color
 	unsigned char		g;
 	unsigned char		b;
 }						t_color;
+
+typedef struct			s_ray
+{
+	float	ray_angle;
+	float	hit_x;
+	float	hit_y;
+	int		ray_len;
+}						t_ray;
 
 t_wolf3d				init_sdl();
 void    				put_pixel_sdl(t_wolf3d wolf, int x, int y, t_color color);

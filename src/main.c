@@ -6,13 +6,12 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 04:07:18 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/13 04:27:24 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/17 22:56:08 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 #include "libft.h"
-#include <stdio.h>
 
 void			fill_background(t_wolf3d *wolf)
 {
@@ -24,9 +23,6 @@ void			fill_background(t_wolf3d *wolf)
 int             main(int argc, char **argv)
 {
     t_wolf3d	wolf;
-    int			mapX = 8;
-    int			mapY = 8;
-    int			mapS = 64;
 	float		player_x;
     float		player_y;
 	float		player_dx;
@@ -52,9 +48,11 @@ int             main(int argc, char **argv)
 	player_y = map.player_position.y * map.width * map.height;
     wolf.is_running = 1;
 	fill_background(&wolf);
+
 	draw_map(map, &wolf);
 	draw_rays(map, &wolf, player_x, player_y, player_alpha);
 	draw_player(&wolf, player_x, player_y, player_dx, player_dy);
+	SDL_RenderPresent(wolf.renderer);
     while (wolf.is_running)
     {
         while (SDL_PollEvent(&wolf.event))
@@ -93,12 +91,9 @@ int             main(int argc, char **argv)
 				draw_map(map, &wolf);
 				draw_rays(map, &wolf, player_x, player_y, player_alpha);
 				draw_player(&wolf, player_x, player_y, player_dx, player_dy);
+				SDL_RenderPresent(wolf.renderer);
             }
     	}
-    	//SDL_RenderCopy(wolf.renderer, wolf.texture, NULL, NULL);
-		//SDL_RenderClear(wolf.renderer);
-		//SDL_UpdateTexture(wolf.texture, NULL, wolf.pixels, SCREEN_WIDTH * sizeof(Uint32));
-        SDL_RenderPresent(wolf.renderer);
 	}
     destroy_sdl(wolf);
     return (0);
