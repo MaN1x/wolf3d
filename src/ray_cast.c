@@ -1,178 +1,141 @@
-#include "wolf3d.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ray_cast.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/13 04:07:48 by mjoss             #+#    #+#             */
+/*   Updated: 2020/11/18 04:54:59 by mjoss            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-float			dist(x1, y1, x2, y2)
+#include "wolf3d.h"
+#include <math.h>
+
+void		draw_pseudo_3d(t_wolf3d *wolf, t_ray *ray, float i, float player_angle, t_map map)
 {
-	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
+	int map_size;
+	int horisontal_line_size;
+	int horisontal_line_start;
+
+	SDL_Rect	srect;
+	SDL_Rect	drect;
+
+	map_size = map.width * map.height;
+	horisontal_line_size = (SCREEN_HEIGHT / ((float)ray->ray_len / map_size * cos(ray->ray_angle - player_angle)));
+	horisontal_line_start = (SCREEN_HEIGHT - horisontal_line_size) / 2;
+
+	drect.x = i + map.width * map_size;
+	drect.y = horisontal_line_start;
+	drect.w = 1;
+	drect.h = horisontal_line_size;
+
+	if (ray->hit_x != 0)
+	{
+		srect.x = ray->hit_x * 800;
+		srect.y = 0;
+		srect.w = 1;
+		srect.h = 680;
+	}
+	else
+	{
+		srect.x = ray->hit_y * 800;
+		srect.y = 0;
+		srect.w = 1;
+		srect.h = 680;
+	}
+	if (horisontal_line_start < 0)
+	{
+		srect.y = horisontal_line_start / 680 * -1;
+		horisontal_line_start = 0;
+		horisontal_line_size = SCREEN_HEIGHT;
+	}
+	SDL_RenderCopy(wolf->renderer, wolf->texture, &srect, &drect);
 }
 
-void			draw_ray(t_map map, t_wolf3d *wolf, int x, int y, float player_angle)
+int			draw_ray_map(t_map map, t_wolf3d *wolf, float player_x, float player_y, t_ray *ray)
 {
-    int         count_rays;
-    int         ray;
-    int         step_of_ray;
-    int         count_steps;
-    float       ray_x;
-    float       ray_y;
-    float       delta_ray_x;
-    float       delta_ray_y;
-    float       ray_angle;
-    t_color     color;
-    int         size_map;
-    int			mapx;
-    int			mapy;
-    int			mapp;
-    int			distT;
+	float ray_x;
+	float ray_y;
+	int ray_len;
+	int	size_map;
 
+	float mod_ray_x;
+	float mod_ray_y;
 
-    count_rays = 60;
-    count_steps = 8;
-    ray = 0;
-    ray_angle = player_angle - M_PI * 30 / 180;
-	if (ray_angle < 0)
+	ray_len = 0;
+	size_map = map.width * map.height;
+	while (ray_len < VISIBILITY_RANGE * size_map)
 	{
-		ray_angle += 2 * M_PI;
+		ray_x = player_x + ray_len * cos(ray->ray_angle);
+		ray_y = player_y + ray_len * sin(ray->ray_angle);
+		if ((ray_x >= 0 && ray_x / size_map < map.width) && (ray_y >= 0 && ray_y / size_map < map.height) &&
+			map.map[(int)ray_y / size_map][(int)ray_x / size_map] == 1)
+			break;
+		ray_len++;
 	}
-	if (ray_angle > 2 * M_PI)
-	{
-		ray_angle -= 2 * M_PI;
-	}
-    color.r = 255;
-    color.b = 245;
-    color.g = 11;
-    size_map = map.height * map.width;
-    while (ray < count_rays)
-    {
-        step_of_ray = 0;
-        float distH = 1000000;
-        float hx = x;
-        float hy = y;
-		float htan = -1 / tan(ray_angle);
-        if (ray_angle > M_PI && htan != 0)
-        {
-            ray_y = ((int)y / size_map) * size_map - 0.0001f;
-            ray_x = (y - ray_y) * (htan) + x;
-            delta_ray_y = -size_map;
-            delta_ray_x = -delta_ray_y * (htan);
-        }
-        if (ray_angle < M_PI && htan != 0)
-        {
-            ray_y = ((int)y / size_map) * size_map + size_map;
-            ray_x = (y - ray_y) * (htan) + x;
-            delta_ray_y = size_map;
-            delta_ray_x = -delta_ray_y * (htan);
-        }
-        if (ray_angle == 0 || ray_angle == M_PI)
-        {
-            delta_ray_x = x;
-            delta_ray_y = y;
-            step_of_ray = count_steps;
-        }
-        while (step_of_ray < count_steps)
-        {
-            mapx = (int)ray_x / size_map;
-            mapy = (int)ray_y / size_map;
-            if (mapx < map.height && mapy < map.width  && mapx >= 0 && mapy >= 0 && map.map[mapx][mapy] == 1)
-            {
-				hx = ray_x;
-				hy = ray_y;
-				distH = dist(x, y, hx, hy);
-                step_of_ray = count_steps;
-            }
-            else
-            {
-                ray_x += delta_ray_x;
-                ray_y += delta_ray_y;
-                step_of_ray++;
-            }
-        }
-        step_of_ray = 0;
-        float distV = INFINITY;
-        float vx = x;
-        float vy = y;
-        if (ray_angle > M_PI_2 && ray_angle < 3 *  M_PI_2)
-        {
-            ray_x = ((int)x / size_map) * size_map - 0.0001f;
-            ray_y = (x - ray_x) * (-tan(ray_angle)) + y;
-            delta_ray_x = -size_map;
-            delta_ray_y = -delta_ray_x * (-tan(ray_angle));
-        }
-        if (ray_angle < M_PI_2 || ray_angle > 3 *  M_PI_2)
-        {
-            ray_x = ((int)x / size_map) * size_map + size_map;
-            ray_y  = (x - ray_x) * (-tan(ray_angle)) + y;
-            delta_ray_x = size_map;
-            delta_ray_y = -delta_ray_x * (-tan(ray_angle));
-        }
-        if (ray_angle == 0 || ray_angle == M_PI)
-        {
-            delta_ray_x = x;
-            delta_ray_y = y;
-            step_of_ray = count_steps;
-        }
-        while (step_of_ray < count_steps)
-        {
-            mapx = (int)ray_x / size_map;
-            mapy = (int)ray_y / size_map;
-            if (mapx < map.height && mapy < map.width  && mapx >= 0 && mapy >= 0 && map.map[mapx][mapy] == 1)
-            {
-				vx = ray_x;
-				vy = ray_y;
-				distV = dist(x, y, vx, vy);
-                step_of_ray = count_steps;
-            }
-            else
-            {
-                ray_x += delta_ray_x;
-                ray_y += delta_ray_y;
-                step_of_ray++;
-            }
-        }
-		if (distV < distH)
-		{
-			ray_x = vx;
-			ray_y = vy;
-			distT = distV;
-        	SDL_SetRenderDrawColor(wolf->renderer, 255, 0, 0, 255);
-		}
-		if (distH < distV)
-		{
-			ray_x = hx;
-			ray_y = hy;
-			distT = distH;
-        	SDL_SetRenderDrawColor(wolf->renderer, 255, 245, 11, 255);
-		}
-        SDL_RenderDrawLine(wolf->renderer, (int)x, (int)y, (int)ray_x, (int)ray_y);
 
-		//draw walls
-		float ca = player_angle - ray_angle;
-		if (ca < 0)
+	mod_ray_x = ray_x  - (int)(ray_x / size_map) * size_map;
+	mod_ray_y = ray_y  - (int)(ray_y / size_map) * size_map;
+
+	if (M_PI_2 > ray->ray_angle)
+	{
+		if ((int)mod_ray_y == 0)
 		{
-			ca += 2 * M_PI;
+			SDL_SetRenderDrawColor(wolf->renderer, 255, 255, 11, 255);
+			ray->hit_x = mod_ray_x / size_map;
+			ray->hit_y = 0;
 		}
-		if (ca > 2 * M_PI)
+		else
 		{
-			ca -= 2 * M_PI;
+			SDL_SetRenderDrawColor(wolf->renderer, 255, 0, 11, 255);
+			ray->hit_y = mod_ray_y / size_map;
+			ray->hit_x = 0;
 		}
-		distT = distT * cos(ca);
-		// 320 X 160 - window size for ray cast world
-		float lineH;
-		if (distT != 0)
-			lineH = (size_map * 320) / distT;
-		if (lineH > 320)
+	}
+	else
+	{
+		mod_ray_x = (ray_x - size_map)  - (int)((ray_x - size_map) / size_map) * size_map;
+		mod_ray_y = (ray_y - size_map)  - (int)((ray_y - size_map) / size_map) * size_map;
+		if ((int)mod_ray_y == 0)
 		{
-			lineH = 320;
+			SDL_SetRenderDrawColor(wolf->renderer, 255, 255, 11, 255);
+			ray->hit_x = mod_ray_x / size_map;
+			ray->hit_y = 0;
 		}
-		float lineO = 160 - lineH / 2;
-		SDL_RenderDrawLine(wolf->renderer, (int)(ray * 8 + 530), (int)lineO, (int)(ray * 8 + 530), (int)(lineH + lineO));
-		ray_angle += M_PI / 180;
-		if (ray_angle < 0)
+		else
 		{
-			ray_angle += 2 * M_PI;
+			SDL_SetRenderDrawColor(wolf->renderer, 255, 0, 11, 255);
+			ray->hit_y = mod_ray_y / size_map;
+			ray->hit_x = 0;
 		}
-		if (ray_angle > 2 * M_PI)
-		{
-			ray_angle -= 2 * M_PI;
-		}
-        ray++;
-    }
+	}
+	SDL_RenderDrawLine(wolf->renderer, (int)player_x, (int)player_y, (int)ray_x, (int)ray_y);
+	return (ray_len);
+}
+
+/*
+**  rays_count = SCREEN_WIDTH / fov
+**  angle_value = fov / rays_count <==> fov / (SCREEN_WIDTH / fov)
+*/
+
+
+void			draw_rays(t_map map, t_wolf3d *wolf, float player_x, float player_y, float player_angle)
+{
+	float	fov;
+	int 	i;
+	float	angle_value;
+	t_ray	ray[SCREEN_WIDTH];
+
+	fov = 60 * (M_PI / 180);
+	angle_value = pow(fov, 2.0) / (SCREEN_WIDTH - map.width * map.width * map.height);
+	i = 0;
+	while (i < (SCREEN_WIDTH - map.width * map.width * map.height))
+	{
+		ray[i].ray_angle = player_angle - fov / 2 + (float)i * angle_value;
+		ray[i].ray_len = draw_ray_map(map, wolf, player_x, player_y, &ray[i]);
+		draw_pseudo_3d(wolf, &ray[i], (float)i, player_angle, map);
+		i++;
+	}
 }

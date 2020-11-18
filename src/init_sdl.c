@@ -1,11 +1,14 @@
-/*
- * Filename: /Users/Student/mandelbrot/init_sdl.c
- * Path: /Users/Student/mandelbrot
- * Created Date: Tuesday, May 12th 2020, 10:42:02 pm
- * Author: Student
- * 
- * Copyright (c) 2020 Your Company
- */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_sdl.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/17 22:42:22 by mjoss             #+#    #+#             */
+/*   Updated: 2020/11/17 22:42:22 by mjoss            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "wolf3d.h"
 
@@ -14,16 +17,22 @@ t_wolf3d		init_sdl()
 	t_wolf3d	wolf;
 
 	SDL_Init(SDL_INIT_VIDEO);
-    wolf.win = SDL_CreateWindow("SDL2 Pixel Drawing",
-        SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
-	wolf.renderer = SDL_CreateRenderer(wolf.win, -1, 0);
-   // SDL_SetRenderDrawColor(wolf.renderer, 255, 255, 255, 255);
-    //SDL_RenderClear(wolf.renderer); // fill the scene with white
-   	wolf.texture = SDL_CreateTexture(wolf.renderer,
-        SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, SCREEN_WIDTH, SCREEN_HEIGHT);
-    wolf.pixels = malloc(sizeof(Uint32) * SCREEN_WIDTH * SCREEN_HEIGHT);//new Uint32[SCREEN_WIDTH * 480];
-    memset(wolf.pixels, 0, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
-    wolf.image = IMG_Load("wall.png");
-	wolf.texture = SDL_CreateTextureFromSurface(wolf.renderer, wolf.image);
+    if ((wolf.win = SDL_CreateWindow("SDL2 Pixel Drawing",
+        SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0)) == NULL)
+		printf("Window create fail\n");
+	else
+		printf("Window create success\n");
+	if (!(wolf.renderer = SDL_CreateRenderer(wolf.win, -1, 0)))
+		printf("SDL create Renderer fail: %s\n", SDL_GetError());
+	else
+		printf("SDL create Renderer success\n");
+    if ((wolf.image = IMG_Load("barash.jpg")) == NULL)
+    	printf("imaged load fail\n");
+    else
+		printf("imaged load success\n");
+	if ((wolf.texture = SDL_CreateTextureFromSurface(wolf.renderer, wolf.image)) == NULL)
+		printf("SDL create texture from surface fail: %s\n", SDL_GetError());
+	else
+		printf("SDL create texture from surface success\n");
 	return (wolf);
 }
