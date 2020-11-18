@@ -26,6 +26,14 @@ t_wolf3d		init_sdl()
 		printf("SDL create Renderer fail: %s\n", SDL_GetError());
 	else
 		printf("SDL create Renderer success\n");
+	if ((wolf.sky_image = IMG_Load("sky.png")) == NULL)
+    	printf("imaged load fail\n");
+    else
+		printf("imaged load success\n");
+	if ((wolf.sky_texture = SDL_CreateTextureFromSurface(wolf.renderer, wolf.sky_image)) == NULL)
+		printf("SDL create texture from surface fail: %s\n", SDL_GetError());
+	else
+		printf("SDL create texture from surface success\n");
     if ((wolf.image = IMG_Load("barash.jpg")) == NULL)
     	printf("imaged load fail\n");
     else

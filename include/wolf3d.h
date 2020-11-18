@@ -29,6 +29,10 @@ typedef struct			s_wolf3d
 
 	SDL_Surface			*image;
 	SDL_Texture			*texture;
+
+	SDL_Surface			*sky_image;
+	SDL_Texture			*sky_texture;
+
 	Uint32				*pixels;
 	int					is_running;
 	int					is_hit;

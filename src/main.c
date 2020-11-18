@@ -19,6 +19,29 @@ void			fill_background(t_wolf3d *wolf)
 	SDL_RenderClear(wolf->renderer);
 }
 
+void			draw_sky(t_wolf3d *wolf)
+{
+	SDL_Rect	srect;
+	SDL_Rect	drect;
+
+	drect.x = SCREEN_WIDTH / 2;
+	drect.y = 0;
+	drect.w = SCREEN_WIDTH;
+	drect.h = SCREEN_HEIGHT / 2;
+	SDL_RenderCopy(wolf->renderer, wolf->sky_texture, NULL, &drect);
+}
+
+void			draw_floor(t_wolf3d *wolf)
+{
+	SDL_Rect	drect;
+
+	drect.x = SCREEN_WIDTH / 2;
+	drect.y = SCREEN_HEIGHT / 2;
+	drect.w = SCREEN_WIDTH;
+	drect.h = SCREEN_HEIGHT / 2;
+	SDL_SetRenderDrawColor( wolf->renderer, 28, 128, 68, 255);
+	SDL_RenderFillRect(wolf->renderer, &drect);
+}
 
 int             main(int argc, char **argv)
 {
@@ -48,7 +71,8 @@ int             main(int argc, char **argv)
 	player_y = map.player_position.y * map.width * map.height + 100;
     wolf.is_running = 1;
 	fill_background(&wolf);
-
+	draw_sky(&wolf);
+	draw_floor(&wolf);
 	draw_map(map, &wolf);
 	draw_rays(map, &wolf, player_x, player_y, player_alpha);
 	draw_player(&wolf, player_x, player_y, player_dx, player_dy);
@@ -82,13 +106,15 @@ int             main(int argc, char **argv)
                     player_x += player_dx;
 					player_y += player_dy;
 				}
-                else if (wolf.event.key.keysym.sym == SDLK_DOWN && wolf.is_hit == 0)
+                else if (wolf.event.key.keysym.sym == SDLK_DOWN)
 				{
 					player_x -= player_dx;
                     player_y -= player_dy;
 				}
 				wolf.is_hit = 0;
 				fill_background(&wolf);
+				draw_sky(&wolf);
+				draw_floor(&wolf);
 				draw_map(map, &wolf);
 				draw_rays(map, &wolf, player_x, player_y, player_alpha);
 				draw_player(&wolf, player_x, player_y, player_dx, player_dy);
