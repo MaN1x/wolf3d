@@ -16,7 +16,7 @@ t_wolf3d		init_sdl()
 {
 	t_wolf3d	wolf;
 
-	SDL_Init(SDL_INIT_VIDEO);
+	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     if ((wolf.win = SDL_CreateWindow("SDL2 Pixel Drawing",
         SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0)) == NULL)
 		printf("Window create fail\n");
@@ -42,6 +42,15 @@ t_wolf3d		init_sdl()
 		printf("SDL create texture from surface fail: %s\n", SDL_GetError());
 	else
 		printf("SDL create texture from surface success\n");
+	SDL_FreeSurface(wolf.sky_image);
+	SDL_FreeSurface(wolf.image);
+	if (Mix_OpenAudio(44100, AUDIO_F32SYS, 2, 2048) < 0)
+    {
+        //ft_putstr("error");
+        exit(0);
+    }
+    wolf.sound.bgm = Mix_LoadMUS("1.wav");
+    wolf.sound.sound_effect = Mix_LoadWAV("footstep1.wav");
 	wolf.is_hit = 0;
 	return (wolf);
 }

@@ -35,7 +35,7 @@ HEADER_FILES = $(addprefix $(HEADERS_DIR), $(HEADERS))
 all: $(NAME)
 
 $(NAME): $(OBJ_DIR) $(OBJ_FILES)
-	gcc -g -L lib -lSDL2 -lSDL2_image -L libft -lft $(OBJ_FILES) -o $(NAME)
+	gcc -g -L lib -lSDL2 -lSDL2_image -lSDL2_mixer -L libft -lft $(OBJ_FILES) -o $(NAME)
 
 $(OBJ_DIR):
 	mkdir $(OBJ_DIR)

@@ -85,6 +85,29 @@ int             main(int argc, char **argv)
                 wolf.is_running = 0;
             if (wolf.event.type == SDL_KEYDOWN)
             {
+				if (wolf.event.key.keysym.sym == SDLK_p)
+				{
+					if (!(Mix_PlayingMusic()))
+					{
+						Mix_PlayMusic(wolf.sound.bgm, -1);		
+					}
+					else if(Mix_PausedMusic())
+					{
+						Mix_ResumeMusic();
+					}
+					else
+					{
+						Mix_PausedMusic();						
+					}
+				}
+				else if (wolf.event.key.keysym.sym == SDLK_q)
+				{
+					Mix_PauseMusic();
+				}
+                else if (wolf.event.key.keysym.sym == SDLK_s)
+				{
+					Mix_HaltMusic();
+				}
                 if (wolf.event.key.keysym.sym == SDLK_LEFT)
 				{
 					player_alpha -= 0.1f;
@@ -105,11 +128,13 @@ int             main(int argc, char **argv)
 				{
                     player_x += player_dx;
 					player_y += player_dy;
+					Mix_PlayChannel(0, wolf.sound.sound_effect, 0);
 				}
-                else if (wolf.event.key.keysym.sym == SDLK_DOWN)
+                else if (wolf.event.key.keysym.sym == SDLK_DOWN && wolf.is_hit == 0)
 				{
 					player_x -= player_dx;
                     player_y -= player_dy;
+					Mix_PlayChannel(0, wolf.sound.sound_effect, 0);
 				}
 				wolf.is_hit = 0;
 				fill_background(&wolf);

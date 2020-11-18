@@ -17,9 +17,16 @@
 # define VISIBILITY_RANGE 8
 # include "SDL2/SDL.h"
 # include "SDL2/SDL_image.h"
+# include "SDL2/SDL_mixer.h"
 # include <unistd.h>
 # include <math.h>
 # include "map_parser.h"
+
+typedef struct			s_sounds
+{
+	Mix_Music			*bgm;
+	Mix_Chunk			*sound_effect;
+}						t_sounds;
 
 typedef struct			s_wolf3d
 {
@@ -36,6 +43,7 @@ typedef struct			s_wolf3d
 	Uint32				*pixels;
 	int					is_running;
 	int					is_hit;
+	t_sounds			sound;
 }						t_wolf3d;
 
 typedef struct			s_color
