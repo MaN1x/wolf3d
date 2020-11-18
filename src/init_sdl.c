@@ -34,5 +34,6 @@ t_wolf3d		init_sdl()
 		printf("SDL create texture from surface fail: %s\n", SDL_GetError());
 	else
 		printf("SDL create texture from surface success\n");
+	wolf.is_hit = 0;
 	return (wolf);
 }

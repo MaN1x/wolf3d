@@ -44,8 +44,8 @@ int             main(int argc, char **argv)
 	player_dx = cos(player_alpha) * 5;
 	player_dy = sin(player_alpha) * 5;
     wolf = init_sdl();
-	player_x = map.player_position.x * map.width * map.height;
-	player_y = map.player_position.y * map.width * map.height;
+	player_x = map.player_position.x * map.width * map.height + 100;
+	player_y = map.player_position.y * map.width * map.height + 100;
     wolf.is_running = 1;
 	fill_background(&wolf);
 
@@ -77,16 +77,17 @@ int             main(int argc, char **argv)
 					player_dx = cos(player_alpha) * 5;
 					player_dy = sin(player_alpha) * 5;
 				}
-                else if (wolf.event.key.keysym.sym == SDLK_UP)
+                else if (wolf.event.key.keysym.sym == SDLK_UP && wolf.is_hit == 0)
 				{
                     player_x += player_dx;
 					player_y += player_dy;
 				}
-                else if (wolf.event.key.keysym.sym == SDLK_DOWN)
+                else if (wolf.event.key.keysym.sym == SDLK_DOWN && wolf.is_hit == 0)
 				{
 					player_x -= player_dx;
                     player_y -= player_dy;
 				}
+				wolf.is_hit = 0;
 				fill_background(&wolf);
 				draw_map(map, &wolf);
 				draw_rays(map, &wolf, player_x, player_y, player_alpha);

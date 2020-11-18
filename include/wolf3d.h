@@ -31,6 +31,7 @@ typedef struct			s_wolf3d
 	SDL_Texture			*texture;
 	Uint32				*pixels;
 	int					is_running;
+	int					is_hit;
 }						t_wolf3d;
 
 typedef struct			s_color

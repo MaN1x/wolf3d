@@ -75,7 +75,7 @@ int			draw_ray_map(t_map map, t_wolf3d *wolf, float player_x, float player_y, t_
 			break;
 		ray_len++;
 	}
-
+    //printf("<%d>", ray_len);
 	mod_ray_x = ray_x  - (int)(ray_x / size_map) * size_map;
 	mod_ray_y = ray_y  - (int)(ray_y / size_map) * size_map;
 
@@ -135,6 +135,8 @@ void			draw_rays(t_map map, t_wolf3d *wolf, float player_x, float player_y, floa
 	{
 		ray[i].ray_angle = player_angle - fov / 2 + (float)i * angle_value;
 		ray[i].ray_len = draw_ray_map(map, wolf, player_x, player_y, &ray[i]);
+		if (i == (SCREEN_WIDTH - map.width * map.width * map.height) / 2 && ray[i].ray_len < 28)
+        	wolf->is_hit = 1;
 		draw_pseudo_3d(wolf, &ray[i], (float)i, player_angle, map);
 		i++;
 	}
