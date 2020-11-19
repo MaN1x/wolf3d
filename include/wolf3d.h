@@ -6,7 +6,7 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 22:54:30 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/17 22:54:30 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/19 12:58:54 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define WOLF3D_H
 # define SCREEN_HEIGHT	720
 # define SCREEN_WIDTH	1024
-# define VISIBILITY_RANGE 8
+# define VISIBILITY_RANGE 50
+# define SIZE_MAP 0.25
 # include "SDL2/SDL.h"
 # include "SDL2/SDL_image.h"
 # include <unistd.h>
@@ -36,6 +37,10 @@ typedef struct			s_wolf3d
 	Uint32				*pixels;
 	int					is_running;
 	int					is_hit;
+
+	float				factor;
+
+	t_map				*map;
 }						t_wolf3d;
 
 typedef struct			s_color

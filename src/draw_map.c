@@ -10,11 +10,10 @@ void            draw_map(t_map map, t_wolf3d *wolf)
 	SDL_Rect r;
 	t_color color;
 
-	int map_size = map.width * map.height;
-	while (y < map.width)
+	while (y < map.height)
 	{
 		x = 0;
-		while (x < map.height)
+		while (x < map.width)
 		{
 			if (map.map[y][x] == 1)
 			{
@@ -28,10 +27,10 @@ void            draw_map(t_map map, t_wolf3d *wolf)
 				color.g = 77;
 				color.b = 0;
 			}
-			r.w = map_size;
-			r.h = map_size;
-			r.x = x * map_size;
-			r.y = y * map_size;
+			r.w = (SCREEN_WIDTH * SIZE_MAP) / map.width;
+			r.h = (SCREEN_HEIGHT * SIZE_MAP) / map.height;
+			r.x = x * r.w;
+			r.y = y * r.h;
 
 			SDL_SetRenderDrawColor( wolf->renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
 			SDL_RenderFillRect(wolf->renderer, &r);

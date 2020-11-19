@@ -6,7 +6,7 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 04:07:18 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/17 22:56:08 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/19 13:24:49 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,9 @@ void			fill_background(t_wolf3d *wolf)
 
 void			draw_sky(t_wolf3d *wolf)
 {
-	SDL_Rect	srect;
 	SDL_Rect	drect;
 
-	drect.x = SCREEN_WIDTH / 2;
+	drect.x = 0;
 	drect.y = 0;
 	drect.w = SCREEN_WIDTH;
 	drect.h = SCREEN_HEIGHT / 2;
@@ -35,7 +34,7 @@ void			draw_floor(t_wolf3d *wolf)
 {
 	SDL_Rect	drect;
 
-	drect.x = SCREEN_WIDTH / 2;
+	drect.x = 0;
 	drect.y = SCREEN_HEIGHT / 2;
 	drect.w = SCREEN_WIDTH;
 	drect.h = SCREEN_HEIGHT / 2;
@@ -67,14 +66,17 @@ int             main(int argc, char **argv)
 	player_dx = cos(player_alpha) * 5;
 	player_dy = sin(player_alpha) * 5;
     wolf = init_sdl();
-	player_x = map.player_position.x * map.width * map.height + 100;
-	player_y = map.player_position.y * map.width * map.height + 100;
+	wolf.map = &map;
+	wolf.factor = (SCREEN_WIDTH / 16);
+
+	player_x = map.player_position.x * wolf.factor;
+	player_y = map.player_position.y * wolf.factor;
     wolf.is_running = 1;
 	fill_background(&wolf);
 	draw_sky(&wolf);
 	draw_floor(&wolf);
-	draw_map(map, &wolf);
 	draw_rays(map, &wolf, player_x, player_y, player_alpha);
+	draw_map(map, &wolf);
 	draw_player(&wolf, player_x, player_y, player_dx, player_dy);
 	SDL_RenderPresent(wolf.renderer);
     while (wolf.is_running)
