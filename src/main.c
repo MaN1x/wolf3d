@@ -6,7 +6,7 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 04:07:18 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/19 13:24:49 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/21 21:18:57 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,9 @@ void			draw_floor(t_wolf3d *wolf)
 int             main(int argc, char **argv)
 {
     t_wolf3d	wolf;
-	float		player_x;
-    float		player_y;
+    t_player	player;
 	float		player_dx;
 	float		player_dy;
-	float		player_alpha = 0;
 	int			map_status;
 	t_map		map;
 
@@ -63,63 +61,64 @@ int             main(int argc, char **argv)
 		ft_putstr("syscall err\n");
 		exit (0);
 	}
-	player_dx = cos(player_alpha) * 5;
-	player_dy = sin(player_alpha) * 5;
     wolf = init_sdl();
-	wolf.map = &map;
 	wolf.factor = (SCREEN_WIDTH / 16);
+	player.x = map.player_position.x * wolf.factor;
+	player.y = map.player_position.y * wolf.factor;
+	player.angle = 3.915858;
+	player_dx = cos(player.angle) * 5;
+	player_dy = sin(player.angle) * 5;
+	wolf.map = &map;
 
-	player_x = map.player_position.x * wolf.factor;
-	player_y = map.player_position.y * wolf.factor;
     wolf.is_running = 1;
 	fill_background(&wolf);
 	draw_sky(&wolf);
 	draw_floor(&wolf);
-	draw_rays(map, &wolf, player_x, player_y, player_alpha);
+	draw_rays(map, &wolf, player);
 	draw_map(map, &wolf);
-	draw_player(&wolf, player_x, player_y, player_dx, player_dy);
+	draw_player(&wolf, player.x, (int)player.y, (int)player_dx, player_dy);
 	SDL_RenderPresent(wolf.renderer);
     while (wolf.is_running)
     {
         while (SDL_PollEvent(&wolf.event))
         {
-            if (wolf.event.type == SDL_QUIT || wolf.event.key.keysym.sym == SDLK_ESCAPE)
+            if (wolf.event.key.keysym.sym == SDLK_ESCAPE)
                 wolf.is_running = 0;
             if (wolf.event.type == SDL_KEYDOWN)
             {
                 if (wolf.event.key.keysym.sym == SDLK_LEFT)
 				{
-					player_alpha -= 0.1f;
-					if (player_alpha < 0)
-						player_alpha += 2 * M_PI;
-					player_dx = cos(player_alpha) * 5;
-					player_dy = sin(player_alpha) * 5;
+					player.angle -= 0.1f;
+					if (player.angle < 0)
+						player.angle += 2 * M_PI;
+					player_dx = cos(player.angle) * 5;
+					player_dy = sin(player.angle) * 5;
 				}
                 else if (wolf.event.key.keysym.sym == SDLK_RIGHT)
 				{
-					player_alpha += 0.1f;
-					if (player_alpha > 2 * M_PI)
-						player_alpha -= 2 * M_PI;
-					player_dx = cos(player_alpha) * 5;
-					player_dy = sin(player_alpha) * 5;
+					player.angle += 0.1f;
+					if (player.angle > 2 * M_PI)
+						player.angle -= 2 * M_PI;
+					player_dx = cos(player.angle) * 5;
+					player_dy = sin(player.angle) * 5;
 				}
                 else if (wolf.event.key.keysym.sym == SDLK_UP && wolf.is_hit == 0)
 				{
-                    player_x += player_dx;
-					player_y += player_dy;
+                    player.x += player_dx;
+					player.y += player_dy;
 				}
                 else if (wolf.event.key.keysym.sym == SDLK_DOWN)
 				{
-					player_x -= player_dx;
-                    player_y -= player_dy;
+					player.x -= player_dx;
+                    player.y -= player_dy;
 				}
 				wolf.is_hit = 0;
 				fill_background(&wolf);
 				draw_sky(&wolf);
 				draw_floor(&wolf);
+				draw_rays(map, &wolf, player);
 				draw_map(map, &wolf);
-				draw_rays(map, &wolf, player_x, player_y, player_alpha);
-				draw_player(&wolf, player_x, player_y, player_dx, player_dy);
+				draw_player(&wolf, player.x, player.y, player_dx, player_dy);
 				SDL_RenderPresent(wolf.renderer);
             }
     	}

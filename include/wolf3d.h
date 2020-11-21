@@ -6,7 +6,7 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 22:54:30 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/19 12:58:54 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/21 15:11:04 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,15 @@ typedef struct			s_ray
 	float	ray_angle;
 	float	hit_x;
 	float	hit_y;
-	int		ray_len;
+	float	ray_len;
 }						t_ray;
+
+typedef struct			s_player
+{
+	float	x;
+	float	y;
+	float	angle;
+}						t_player;
 
 t_wolf3d				init_sdl();
 void    				put_pixel_sdl(t_wolf3d wolf, int x, int y, t_color color);
@@ -64,6 +71,6 @@ void					destroy_sdl(t_wolf3d wolf);
 
 void					draw_map(t_map map, t_wolf3d *wolf);
 void            		draw_player(t_wolf3d *wolf, int x, int y, int dx, int dy);
-void					draw_rays(t_map map, t_wolf3d *wolf, float x, float y, float player_alpha);
+void					draw_rays(t_map map, t_wolf3d *wolf, t_player player);
 
 #endif

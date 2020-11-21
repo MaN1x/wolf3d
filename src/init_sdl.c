@@ -34,7 +34,7 @@ t_wolf3d		init_sdl()
 		printf("SDL create texture from surface fail: %s\n", SDL_GetError());
 	else
 		printf("SDL create texture from surface success\n");
-    if ((wolf.image = IMG_Load("barash.jpg")) == NULL)
+    if ((wolf.image = IMG_Load("communism.png")) == NULL)
     	printf("imaged load fail\n");
     else
 		printf("imaged load success\n");
