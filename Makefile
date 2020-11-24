@@ -6,7 +6,7 @@
 #    By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/13 04:12:40 by mjoss             #+#    #+#              #
-#    Updated: 2020/11/17 22:47:33 by mjoss            ###   ########.fr        #
+#    Updated: 2020/11/23 22:01:21 by mjoss            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC		=	main.c			\
 			draw_map.c		\
 			draw_player.c	\
 			ray_cast.c		\
+			texture_loader.c	\
 
 HEADERS	=	map_parser.h	\
 			wolf3d.h		\

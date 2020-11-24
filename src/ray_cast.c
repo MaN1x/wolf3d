@@ -6,12 +6,56 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 04:07:48 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/21 21:18:56 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/24 04:27:53 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 #include <math.h>
+
+void		fill_rect_e(t_wolf3d wolf, t_ray ray, SDL_Rect *rect)
+{
+	int	i;
+
+	i = 1;
+	rect->x = (fabs(ray.hit_y - (int)(ray.hit_y / wolf.factor) * wolf.factor) / wolf.factor) * wolf.textures[i].east->image->w;
+	rect->y = 0;
+	rect->w = 1;
+	rect->h = wolf.textures[i].east->image->h;
+}
+
+void		fill_rect_n(t_wolf3d wolf, t_ray ray, SDL_Rect *rect)
+{
+	int	i;
+
+	i = 1;
+	rect->x = (fabs(ray.hit_x - (int)(ray.hit_x / wolf.factor) * wolf.factor) / wolf.factor) * wolf.textures[i].north->image->w;
+	rect->y = 0;
+	rect->w = 1;
+	rect->h = wolf.textures[i].north->image->h;
+}
+
+void		fill_rect_w(t_wolf3d wolf, t_ray ray, SDL_Rect *rect)
+{
+	int	i;
+
+	i = 1;
+	rect->x = (fabs(ray.hit_y - (int)(ray.hit_y / wolf.factor) * wolf.factor) / wolf.factor) * wolf.textures[i].west->image->w;
+	rect->y = 0;
+	rect->w = 1;
+	rect->h = wolf.textures[i].west->image->h;
+}
+
+void		fill_rect_s(t_wolf3d wolf, t_ray ray, SDL_Rect *rect)
+{
+	int	i;
+
+	i = 1;
+	rect->x = (fabs(ray.hit_x - (int)(ray.hit_x / wolf.factor) * wolf.factor) / wolf.factor) * wolf.textures[i].south->image->w;
+	rect->y = 0;
+	rect->w = 1;
+	rect->h = wolf.textures[i].south->image->h;
+}
 
 void		draw_pseudo_3d(t_wolf3d *wolf, t_ray *ray, float i, t_player player, t_map map)
 {
@@ -31,26 +75,32 @@ void		draw_pseudo_3d(t_wolf3d *wolf, t_ray *ray, float i, t_player player, t_map
 
 	if (ray->hit_x == (int)ray->hit_x)
 	{
-
-		srect.x = (fabs(ray->hit_y - (int)(ray->hit_y / wolf->factor) * wolf->factor) / wolf->factor) * wolf->image->w;
-		srect.y = 0;
-		srect.w = 1;
-		srect.h = wolf->image->h;
+		if (ray->ray_angle > M_PI_2 && ray->ray_angle < 3 * M_PI_2)
+		{
+			fill_rect_w(*wolf, *ray, &srect);
+			SDL_RenderCopy(wolf->renderer, wolf->textures[1].west->texture, &srect, &drect);
+		}
+		else
+		{
+			fill_rect_e(*wolf, *ray, &srect);
+			SDL_RenderCopy(wolf->renderer, wolf->textures[1].east->texture, &srect, &drect);
+		}
 	}
 	else
 	{
-		srect.x = (fabs(ray->hit_x - (int)(ray->hit_x / wolf->factor) * wolf->factor) / wolf->factor) * wolf->image->w;
-		srect.y = 0;
-		srect.w = 1;
-		srect.h = wolf->image->h;
+		if (ray->ray_angle < M_PI)
+		{
+			fill_rect_s(*wolf, *ray, &srect);
+			SDL_RenderCopy(wolf->renderer, wolf->textures[1].south->texture, &srect, &drect);
+		}
+		else
+		{
+			fill_rect_n(*wolf, *ray, &srect);
+			SDL_RenderCopy(wolf->renderer, wolf->textures[1].north->texture, &srect, &drect);
+		}
+
+
 	}
-	if (horisontal_line_start < 0)
-	{
-		srect.y = horisontal_line_start / 680 * -1;
-		horisontal_line_start = 0;
-		horisontal_line_size = SCREEN_HEIGHT;
-	}
-	SDL_RenderCopy(wolf->renderer, wolf->texture, &srect, &drect);
 }
 
 float		draw_vertical(t_map map, t_wolf3d *wolf, t_player player, t_ray *ray)

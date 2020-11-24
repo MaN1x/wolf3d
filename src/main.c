@@ -6,7 +6,7 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 04:07:18 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/21 21:18:57 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/24 04:22:46 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ int             main(int argc, char **argv)
             }
     	}
 	}
+	free_wall(wolf.textures);
     destroy_sdl(wolf);
     return (0);
 }
