@@ -6,7 +6,7 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 22:42:22 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/23 22:29:16 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/24 17:33:20 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,6 @@ t_wolf3d		init_sdl()
 	else
 		printf("SDL create texture from surface success\n");
 	load_textures(&wolf);
-	printf("num = %d\n", wolf.textures[1].num);
-    if ((wolf.image = IMG_Load("communism.png")) == NULL)
-    	printf("imaged load fail\n");
-    else
-		printf("imaged load success\n");
-	if ((wolf.texture = SDL_CreateTextureFromSurface(wolf.renderer, wolf.image)) == NULL)
-		printf("SDL create texture from surface fail: %s\n", SDL_GetError());
-	else
-		printf("SDL create texture from surface success\n");
 	wolf.is_hit = 0;
 	return (wolf);
 }

@@ -6,7 +6,7 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 22:54:30 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/23 22:21:21 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/24 17:33:20 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,6 @@ typedef struct			s_wolf3d
 	SDL_Window			*win;
 	SDL_Event			event;
 	SDL_Renderer		*renderer;
-
-	SDL_Surface			*image;
-	SDL_Texture			*texture;
 
 	SDL_Surface			*sky_image;
 	SDL_Texture			*sky_texture;
@@ -89,7 +86,7 @@ void					destroy_sdl(t_wolf3d wolf);
 void					draw_map(t_map map, t_wolf3d *wolf);
 void            		draw_player(t_wolf3d *wolf, int x, int y, int dx, int dy);
 void					draw_rays(t_map map, t_wolf3d *wolf, t_player player);
-int						load_textures(t_wolf3d *wolf);
+void					load_textures(t_wolf3d *wolf);
 void 					free_wall(t_wall *wall_textures);
 
 #endif

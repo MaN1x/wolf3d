@@ -6,7 +6,7 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 19:59:53 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/24 01:29:15 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/24 17:28:23 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,12 @@ void free_wall(t_wall *wall_textures)
 	free(wall_textures);
 }
 
-int	load_textures(t_wolf3d *wolf)
+void	load_textures(t_wolf3d *wolf)
 {
 	t_wall			*wall_textures;
 
 
-	if ((wall_textures = (t_wall*)malloc(sizeof(t_wall) * NUM_TEXTURES + 1)) == NULL)
+	if ((wall_textures = (t_wall*)malloc(sizeof(t_wall) * (NUM_TEXTURES + 1))) == NULL)
 	{
 		printf("malloc error\n");
 		exit(EXIT_FAILURE);
@@ -100,5 +100,4 @@ int	load_textures(t_wolf3d *wolf)
 //	wall_textures[2].east = create_texture(wolf, "textures/");
 //	wall_textures[2].west = create_texture(wolf, "textures/");
 	wolf->textures = wall_textures;
-	return (1);
 }

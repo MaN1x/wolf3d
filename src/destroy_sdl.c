@@ -11,7 +11,8 @@
 
 void	destroy_sdl(t_wolf3d wolf)
 {
-	SDL_DestroyTexture(wolf.texture);
+	SDL_FreeSurface(wolf.sky_image);
+	SDL_DestroyTexture(wolf.sky_texture);
     SDL_DestroyRenderer(wolf.renderer);
     SDL_DestroyWindow(wolf.win);
     SDL_Quit();
