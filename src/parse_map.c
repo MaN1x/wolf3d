@@ -11,11 +11,6 @@
 /* ************************************************************************** */
 
 #include "map_parser.h"
-#include "libft.h"
-#include <stdlib.h>
-#include <fcntl.h>
-#include <stdio.h>
-#include <unistd.h>
 
 static int	get_map_len(char *path)
 {

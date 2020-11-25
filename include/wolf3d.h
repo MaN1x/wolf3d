@@ -15,13 +15,53 @@
 # define SCREEN_HEIGHT	720
 # define SCREEN_WIDTH	1024
 # define VISIBILITY_RANGE 50
-#define NUM_TEXTURES 1
+# define NUM_TEXTURES 1
 # define SIZE_MAP 0.25
 # include "SDL2/SDL.h"
 # include "SDL2/SDL_image.h"
+# include "SDL2/SDL_mixer.h"
+# include "SDL2/SDL_ttf.h"
 # include <unistd.h>
 # include <math.h>
 # include "map_parser.h"
+# include "libft.h"
+
+typedef struct			s_text
+{
+	TTF_Font			*font;
+	SDL_Rect			rect;
+	SDL_Surface			*text;
+	SDL_Color			white;
+	SDL_Color			black;
+}						t_text;
+
+typedef struct			s_color
+{
+	unsigned char		r;
+	unsigned char		g;
+	unsigned char		b;
+}						t_color;
+
+typedef struct			s_button
+{
+	SDL_Rect			rect;
+	t_color				color;
+	int					pressed;
+	SDL_Window			*win;
+	t_text				txt;
+}						t_button;
+
+typedef struct			s_logo
+{
+	SDL_Rect			rect;
+	t_color				color;
+}						t_logo;		
+
+typedef struct			s_sounds
+{
+	Mix_Music			*bgm;
+	Mix_Chunk			*sound_effect;
+}						t_sounds;
 
 typedef struct			s_texture
 {
@@ -50,19 +90,15 @@ typedef struct			s_wolf3d
 	Uint32				*pixels;
 	int					is_running;
 	int					is_hit;
+	int					is_hit_down;
 
 	float				factor;
-
+	t_sounds			sound;
 	t_map				*map;
 	t_wall				*textures;
+	t_button			button;
+	t_logo				logo;
 }						t_wolf3d;
-
-typedef struct			s_color
-{
-	unsigned char		r;
-	unsigned char		g;
-	unsigned char		b;
-}						t_color;
 
 typedef struct			s_ray
 {
@@ -87,6 +123,9 @@ void					draw_map(t_map map, t_wolf3d *wolf);
 void            		draw_player(t_wolf3d *wolf, int x, int y, int dx, int dy);
 void					draw_rays(t_map map, t_wolf3d *wolf, t_player player);
 void					load_textures(t_wolf3d *wolf);
+void					button_draw(t_wolf3d *wolf);
+void					button_init(t_wolf3d *wolf);
+void					logo_draw(t_wolf3d *wolf);
 void 					free_wall(t_wall *wall_textures);
 
 #endif

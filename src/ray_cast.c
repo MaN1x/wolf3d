@@ -79,6 +79,8 @@ void		draw_pseudo_3d(t_wolf3d *wolf, t_ray *ray, float i, t_player player, t_map
 		{
 			fill_rect_w(*wolf, *ray, &srect);
 			SDL_RenderCopy(wolf->renderer, wolf->textures[1].west->texture, &srect, &drect);
+			if (srect.x - player.x < 1)
+        		wolf->is_hit_down = 1;
 		}
 		else
 		{

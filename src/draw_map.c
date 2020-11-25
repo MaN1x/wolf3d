@@ -17,15 +17,15 @@ void            draw_map(t_map map, t_wolf3d *wolf)
 		{
 			if (map.map[y][x] == 1)
 			{
-				color.r = 84;
-				color.g = 57;
-				color.b = 0;
+				color.r = 0;
+				color.g = 0;
+				color.b = 128;
 			}
 			else
 			{
-				color.r = 117;
-				color.g = 77;
-				color.b = 0;
+				color.r = 0;
+				color.g = 0;
+				color.b = 100;
 			}
 			r.w = (SCREEN_WIDTH * SIZE_MAP) / map.width;
 			r.h = (SCREEN_HEIGHT * SIZE_MAP) / map.height;

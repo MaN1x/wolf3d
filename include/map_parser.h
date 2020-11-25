@@ -14,6 +14,11 @@
 # define MAP_PARSER_H
 # define BUFF_SIZE 10
 # define PLAYER_CHARACTER 'X'
+# include "libft.h"
+# include <stdlib.h>
+# include <fcntl.h>
+# include <unistd.h>
+# include <stdio.h> //
 
 typedef struct	s_position
 {

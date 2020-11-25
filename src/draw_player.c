@@ -9,6 +9,8 @@ void            draw_player(t_wolf3d *wolf, int x, int y, int dx, int dy)
 	r.h = (SCREEN_HEIGHT * SIZE_MAP) / wolf->map->height;
 	r.x = x / wolf->factor * r.w;
 	r.y = y / wolf->factor * r.h;
+    r.w = 3;
+	r.h = 3;
     color.r = 255;
     color.b = 255;
     color.g = 255;

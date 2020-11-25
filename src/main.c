@@ -38,7 +38,7 @@ void			draw_floor(t_wolf3d *wolf)
 	drect.y = SCREEN_HEIGHT / 2;
 	drect.w = SCREEN_WIDTH;
 	drect.h = SCREEN_HEIGHT / 2;
-	SDL_SetRenderDrawColor( wolf->renderer, 28, 128, 68, 255);
+	SDL_SetRenderDrawColor( wolf->renderer, 192, 192, 192, 192);
 	SDL_RenderFillRect(wolf->renderer, &drect);
 }
 
@@ -77,16 +77,48 @@ int             main(int argc, char **argv)
 	draw_rays(map, &wolf, player);
 	draw_map(map, &wolf);
 	draw_player(&wolf, player.x, (int)player.y, (int)player_dx, player_dy);
+	logo_draw(&wolf);
+	button_draw(&wolf);
 	SDL_RenderPresent(wolf.renderer);
     while (wolf.is_running)
     {
         while (SDL_PollEvent(&wolf.event))
         {
-            if (wolf.event.key.keysym.sym == SDLK_ESCAPE)
+            if (wolf.event.type == SDL_QUIT || (wolf.event.type == SDL_KEYDOWN && wolf.event.key.keysym.sym == SDLK_ESCAPE))
                 wolf.is_running = 0;
+			if (wolf.event.type == SDL_WINDOWEVENT &&
+                   wolf.event.window.event == SDL_WINDOWEVENT_CLOSE)
+			{
+				wolf.button.pressed = 0;
+				SDL_HideWindow(wolf.button.win);
+				SDL_DestroyWindow(wolf.button.win);
+			}
             if (wolf.event.type == SDL_KEYDOWN)
             {
-                if (wolf.event.key.keysym.sym == SDLK_LEFT)
+				if (wolf.event.key.keysym.sym == SDLK_p)
+				{
+					if (!(Mix_PlayingMusic()))
+					{
+						Mix_PlayMusic(wolf.sound.bgm, -1);		
+					}
+					else if(Mix_PausedMusic())
+					{
+						Mix_ResumeMusic();
+					}
+					else
+					{
+						Mix_PausedMusic();						
+					}
+				}
+				else if (wolf.event.key.keysym.sym == SDLK_q)
+				{
+					Mix_PauseMusic();
+				}
+                else if (wolf.event.key.keysym.sym == SDLK_s)
+				{
+					Mix_HaltMusic();
+				}
+                if (wolf.event.key.keysym.sym == SDLK_LEFT || wolf.event.key.keysym.sym == SDLK_a)
 				{
 					player.angle -= 0.1f;
 					if (player.angle < 0)
@@ -94,7 +126,7 @@ int             main(int argc, char **argv)
 					player_dx = cos(player.angle) * 5;
 					player_dy = sin(player.angle) * 5;
 				}
-                else if (wolf.event.key.keysym.sym == SDLK_RIGHT)
+                else if (wolf.event.key.keysym.sym == SDLK_RIGHT || wolf.event.key.keysym.sym == SDLK_d)
 				{
 					player.angle += 0.1f;
 					if (player.angle > 2 * M_PI)
@@ -102,35 +134,34 @@ int             main(int argc, char **argv)
 					player_dx = cos(player.angle) * 5;
 					player_dy = sin(player.angle) * 5;
 				}
-                else if (wolf.event.key.keysym.sym == SDLK_UP && wolf.is_hit == 0)
+                else if ((wolf.event.key.keysym.sym == SDLK_UP || wolf.event.key.keysym.sym == SDLK_w) && wolf.is_hit == 0)
 				{
                     player.x += player_dx;
 					player.y += player_dy;
+					Mix_PlayChannel(0, wolf.sound.sound_effect, 0);
 				}
-                else if (wolf.event.key.keysym.sym == SDLK_DOWN)
+                else if ((wolf.event.key.keysym.sym == SDLK_DOWN || wolf.event.key.keysym.sym == SDLK_s) && wolf.is_hit_down == 0)
 				{
 					player.x -= player_dx;
                     player.y -= player_dy;
+					Mix_PlayChannel(0, wolf.sound.sound_effect, 0);
 				}
-				wolf.is_hit = 0;
-				fill_background(&wolf);
-				draw_sky(&wolf);
-				draw_floor(&wolf);
-				draw_rays(map, &wolf, player);
-				draw_map(map, &wolf);
-				draw_player(&wolf, player.x, player.y, player_dx, player_dy);
-				SDL_RenderPresent(wolf.renderer);
             }
+			wolf.is_hit = 0;
+			wolf.is_hit_down = 0;
+			fill_background(&wolf);
+			draw_sky(&wolf);
+			draw_floor(&wolf);
+			draw_rays(map, &wolf, player);
+			draw_map(map, &wolf);
+			draw_player(&wolf, player.x, player.y, player_dx, player_dy);
+			logo_draw(&wolf);
+			button_draw(&wolf);
+			button_init(&wolf);
+			SDL_RenderPresent(wolf.renderer);
     	}
 	}
 	free_wall(wolf.textures);
     destroy_sdl(wolf);
     return (0);
 }
-
-/*
-	wolf.pixels[x + y * SCREEN_WIDTH] = 0xfff000;
-	SDL_RenderClear(wolf.renderer);
-	SDL_UpdateTexture(wolf.texture, NULL, wolf.pixels, SCREEN_WIDTH * sizeof(Uint32));
-    SDL_RenderCopy(wolf.renderer, wolf.texture, NULL, NULL);
-*/

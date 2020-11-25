@@ -21,6 +21,9 @@ SRC		=	main.c			\
 			draw_player.c	\
 			ray_cast.c		\
 			texture_loader.c	\
+			logo_draw.c	\
+			button_draw.c	\
+			button_init.c
 
 HEADERS	=	map_parser.h	\
 			wolf3d.h		\
@@ -36,7 +39,7 @@ HEADER_FILES = $(addprefix $(HEADERS_DIR), $(HEADERS))
 all: $(NAME)
 
 $(NAME): $(OBJ_DIR) $(OBJ_FILES)
-	gcc -g -L lib -lSDL2 -lSDL2_image -L libft -lft $(OBJ_FILES) -o $(NAME)
+	gcc -g -L lib -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -L libft -lft $(OBJ_FILES) -o $(NAME)
 
 $(OBJ_DIR):
 	mkdir $(OBJ_DIR)
