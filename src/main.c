@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
+/*   By: npetrell <npetrell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 04:07:18 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/24 04:22:46 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/25 21:56:24 by npetrell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,13 @@ int             main(int argc, char **argv)
 	draw_floor(&wolf);
 	draw_rays(map, &wolf, player);
 	draw_map(map, &wolf);
-	draw_player(&wolf, player.x, (int)player.y, (int)player_dx, player_dy);
+	t_pos first;
+	first.x = player.x;
+	first.y = player.y;
+	t_pos second;
+	second.x = player_dx;
+	second.y = player_dy;
+	draw_player(&wolf, first, second);
 	logo_draw(&wolf);
 	button_draw(&wolf);
 	SDL_RenderPresent(wolf.renderer);
@@ -154,7 +160,13 @@ int             main(int argc, char **argv)
 			draw_floor(&wolf);
 			draw_rays(map, &wolf, player);
 			draw_map(map, &wolf);
-			draw_player(&wolf, player.x, player.y, player_dx, player_dy);
+			t_pos first;
+			first.x = player.x;
+			first.y = player.y;
+			t_pos second;
+			second.x = player_dx;
+			second.y = player_dy;
+			draw_player(&wolf, first, second);
 			logo_draw(&wolf);
 			button_draw(&wolf);
 			button_init(&wolf);

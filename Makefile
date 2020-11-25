@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+         #
+#    By: npetrell <npetrell@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/13 04:12:40 by mjoss             #+#    #+#              #
 #    Updated: 2020/11/25 22:49:35 by mjoss            ###   ########.fr        #
@@ -22,6 +22,8 @@ SRC		=	main.c			\
 			texture_loader.c\
 			logo_draw.c		\
 			button_draw.c	\
+			button_init.c	\
+			text_output_sett.c \
 			button_init.c	\
 			fill_rect.c		\
 			find_walls.c	\

@@ -1,21 +1,43 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_map.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: npetrell <npetrell@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/25 21:25:43 by npetrell          #+#    #+#             */
+/*   Updated: 2020/11/25 21:47:08 by npetrell         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
-void            draw_map(t_map map, t_wolf3d *wolf)
+void			rect_draw(t_map map, t_wolf3d *wolf, t_position position,
+															t_color color)
 {
-	int	x;
-	int	y;
+	SDL_Rect	r;
 
-	x = 0;
-	y = 0;
-	SDL_Rect r;
-	t_color color;
+	r.w = (SCREEN_WIDTH * SIZE_MAP) / map.width;
+	r.h = (SCREEN_HEIGHT * SIZE_MAP) / map.height;
+	r.x = position.x * r.w;
+	r.y = position.y * r.h;
+	SDL_SetRenderDrawColor(wolf->renderer, color.r, color.g, color.b,
+									SDL_ALPHA_OPAQUE);
+	SDL_RenderFillRect(wolf->renderer, &r);
+}
 
-	while (y < map.height)
+void			draw_map(t_map map, t_wolf3d *wolf)
+{
+	t_color		color;
+	t_position	position;
+
+	position.y = -1;
+	while (++position.y < map.height)
 	{
-		x = 0;
-		while (x < map.width)
+		position.x = -1;
+		while (++position.x < map.width)
 		{
-			if (map.map[y][x] == 1)
+			if (map.map[position.y][position.x] == 1)
 			{
 				color.r = 0;
 				color.g = 0;
@@ -27,15 +49,7 @@ void            draw_map(t_map map, t_wolf3d *wolf)
 				color.g = 0;
 				color.b = 100;
 			}
-			r.w = (SCREEN_WIDTH * SIZE_MAP) / map.width;
-			r.h = (SCREEN_HEIGHT * SIZE_MAP) / map.height;
-			r.x = x * r.w;
-			r.y = y * r.h;
-
-			SDL_SetRenderDrawColor( wolf->renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
-			SDL_RenderFillRect(wolf->renderer, &r);
-			x++;
+			rect_draw(map, wolf, position, color);
 		}
-		y++;
 	}
 }

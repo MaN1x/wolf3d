@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   wolf3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
+/*   By: npetrell <npetrell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 22:54:30 by mjoss             #+#    #+#             */
 /*   Updated: 2020/11/25 23:03:27 by mjoss            ###   ########.fr       */
@@ -110,17 +110,23 @@ typedef struct			s_ray
 
 typedef struct			s_player
 {
-	float	x;
-	float	y;
+	int		x;
+	int		y;
 	float	angle;
 }						t_player;
+
+typedef struct			s_pos
+{
+	int		x;
+	int		y;
+}						t_pos;
 
 t_wolf3d				init_sdl();
 //void    				put_pixel_sdl(t_wolf3d wolf, int x, int y, t_color color);
 void					destroy_sdl(t_wolf3d wolf);
 
 void					draw_map(t_map map, t_wolf3d *wolf);
-void            		draw_player(t_wolf3d *wolf, int x, int y, int dx, int dy);
+void					draw_player(t_wolf3d *wolf, t_pos first, t_pos second);
 void					draw_rays(t_map map, t_wolf3d *wolf, t_player player);
 void					load_textures(t_wolf3d *wolf);
 void					button_draw(t_wolf3d *wolf);
@@ -137,5 +143,6 @@ float					draw_v_down(t_map map, t_wolf3d *wolf, t_player player, float ray_angl
 float					draw_h_down(t_map map, t_wolf3d *wolf, t_player player, float ray_angle);
 void 					hit_x(t_wolf3d *wolf, t_ray *ray, SDL_Rect *s, SDL_Rect *d);
 void					hit_y(t_wolf3d *wolf, t_ray *ray, SDL_Rect *s, SDL_Rect *d);
+void					text_output(t_wolf3d *wolf);
 
 #endif
