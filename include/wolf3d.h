@@ -6,14 +6,18 @@
 /*   By: npetrell <npetrell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 22:54:30 by mjoss             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2020/11/25 21:56:46 by npetrell         ###   ########.fr       */
+=======
+/*   Updated: 2020/11/25 20:08:06 by mjoss            ###   ########.fr       */
+>>>>>>> 667442b45bacdefd0a1fafba7120ab1c2e69da4c
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef WOLF3D_H
 # define WOLF3D_H
-# define SCREEN_HEIGHT	720
-# define SCREEN_WIDTH	1024
+# define SCREEN_HEIGHT	500
+# define SCREEN_WIDTH	500
 # define VISIBILITY_RANGE 50
 # define NUM_TEXTURES 1
 # define SIZE_MAP 0.25
@@ -122,7 +126,7 @@ typedef struct			s_pos
 }						t_pos;
 
 t_wolf3d				init_sdl();
-void    				put_pixel_sdl(t_wolf3d wolf, int x, int y, t_color color);
+//void    				put_pixel_sdl(t_wolf3d wolf, int x, int y, t_color color);
 void					destroy_sdl(t_wolf3d wolf);
 
 void					draw_map(t_map map, t_wolf3d *wolf);
