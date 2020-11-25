@@ -6,14 +6,14 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 22:54:30 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/25 20:08:06 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/25 23:03:27 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef WOLF3D_H
 # define WOLF3D_H
-# define SCREEN_HEIGHT	500
-# define SCREEN_WIDTH	500
+# define SCREEN_HEIGHT	720
+# define SCREEN_WIDTH	1024
 # define VISIBILITY_RANGE 50
 # define NUM_TEXTURES 1
 # define SIZE_MAP 0.25
@@ -127,5 +127,15 @@ void					button_draw(t_wolf3d *wolf);
 void					button_init(t_wolf3d *wolf);
 void					logo_draw(t_wolf3d *wolf);
 void 					free_wall(t_wall *wall_textures);
+void					fill_rect_e(t_wolf3d wolf, t_ray ray, SDL_Rect *rect);
+void					fill_rect_n(t_wolf3d wolf, t_ray ray, SDL_Rect *rect);
+void					fill_rect_w(t_wolf3d wolf, t_ray ray, SDL_Rect *rect);
+void					fill_rect_s(t_wolf3d wolf, t_ray ray, SDL_Rect *rect);
+float					draw_vertical(t_map map, t_wolf3d *wolf, t_player player, t_ray *ray);
+float					draw_horisontal(t_map map, t_wolf3d *wolf, t_player player, t_ray *ray);
+float					draw_v_down(t_map map, t_wolf3d *wolf, t_player player, float ray_angle);
+float					draw_h_down(t_map map, t_wolf3d *wolf, t_player player, float ray_angle);
+void 					hit_x(t_wolf3d *wolf, t_ray *ray, SDL_Rect *s, SDL_Rect *d);
+void					hit_y(t_wolf3d *wolf, t_ray *ray, SDL_Rect *s, SDL_Rect *d);
 
 #endif
