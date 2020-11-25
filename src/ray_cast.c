@@ -13,6 +13,11 @@
 #include "wolf3d.h"
 #include <math.h>
 
+float		length(float x1, float y1, float x2, float y2)
+{
+	return (sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2)));
+}
+
 void		fill_rect_e(t_wolf3d wolf, t_ray ray, SDL_Rect *rect)
 {
 	int	i;
@@ -79,8 +84,6 @@ void		draw_pseudo_3d(t_wolf3d *wolf, t_ray *ray, float i, t_player player, t_map
 		{
 			fill_rect_w(*wolf, *ray, &srect);
 			SDL_RenderCopy(wolf->renderer, wolf->textures[1].west->texture, &srect, &drect);
-			if (srect.x - player.x < 1)
-        		wolf->is_hit_down = 1;
 		}
 		else
 		{
@@ -100,8 +103,6 @@ void		draw_pseudo_3d(t_wolf3d *wolf, t_ray *ray, float i, t_player player, t_map
 			fill_rect_n(*wolf, *ray, &srect);
 			SDL_RenderCopy(wolf->renderer, wolf->textures[1].north->texture, &srect, &drect);
 		}
-
-
 	}
 }
 
@@ -173,10 +174,80 @@ float		draw_horisontal(t_map map, t_wolf3d *wolf, t_player player, t_ray *ray)
 	return (sqrt(pow(player.x - ray_x, 2.0) + pow(player.y - ray_y, 2.0)));
 }
 
+float		draw_vertical_down(t_map map, t_wolf3d *wolf, t_player player, t_ray *ray)
+{
+	float	ray_x;
+	float	ray_y;
+	float	stepX;
+	float	stepY;
+	float	ray_angle;
+
+	ray_angle = ray->ray_angle * M_PI;
+	if (ray_angle < M_PI_2 || ray_angle > 3 * M_PI_2)
+	{
+		ray_x = (int)(player.x / wolf->factor) * wolf->factor  + wolf->factor;
+		stepX = wolf->factor;
+	}
+	else
+	{
+		ray_angle = 2 * M_PI - ray_angle;
+		ray_x = (int)(player.x / wolf->factor) * wolf->factor - 1;
+		stepX = -wolf->factor;
+	}
+	stepY = wolf->factor * tan(ray_angle);
+	ray_y = player.y + (fabs(player.x  - ray_x)) * tan(ray_angle);
+	while (ray_y / wolf->factor > 0 && ray_y / wolf->factor < map.height &&
+		   ray_x / wolf->factor > 0 && ray_x / wolf->factor < map.width &&
+		   map.map[(int)(ray_y / wolf->factor)][(int)(ray_x / wolf->factor)] != 1)
+	{
+		ray_x += stepX;
+		ray_y += stepY;
+	}
+	ray->hit_x = ray_x;
+	ray->hit_y = ray_y;
+	return (sqrt(pow(player.x - ray_x, 2.0) + pow(player.y - ray_y, 2.0)));
+}
+
+float		draw_horisontal_down(t_map map, t_wolf3d *wolf, t_player player, t_ray *ray)
+{
+	float	ray_x;
+	float	ray_y;
+	float	stepX;
+	float	stepY;
+	float	ray_angle;
+
+	ray_angle = ray->ray_angle * M_PI;
+	if (ray_angle < M_PI)
+	{
+		ray_y = (int)(player.y / wolf->factor) * wolf->factor + wolf->factor;
+		stepY = wolf->factor;
+	}
+	else
+	{
+		ray_angle = 2 * M_PI - ray_angle;
+		ray_y = (int)(player.y / wolf->factor) * wolf->factor - 1;
+		stepY = -wolf->factor;
+	}
+	stepX = wolf->factor / tan(ray_angle);
+	ray_x = player.x + (fabs(player.y  - ray_y)) / tan(ray_angle);
+	while (ray_y / wolf->factor > 0 && ray_y / wolf->factor < map.height &&
+		   ray_x / wolf->factor > 0 && ray_x / wolf->factor < map.width &&
+		   map.map[(int)(ray_y / wolf->factor)][(int)(ray_x / wolf->factor)] != 1)
+	{
+		ray_x += stepX;
+		ray_y += stepY;
+	}
+	ray->hit_x = ray_x;
+	ray->hit_y = ray_y;
+	return (sqrt(pow(player.x - ray_x, 2.0) + pow(player.y - ray_y, 2.0)));
+}
+
 void			draw_ray_map(t_map map, t_wolf3d *wolf, t_player player, t_ray *ray)
 {
 	float	ray1_len;
 	float	ray2_len;
+	float	ray1_len_down;
+	float	ray2_len_down;
 
 	if (ray->ray_angle < 0)
 		ray->ray_angle += 2 * M_PI;
@@ -184,6 +255,12 @@ void			draw_ray_map(t_map map, t_wolf3d *wolf, t_player player, t_ray *ray)
 		ray->ray_angle -= 2 * M_PI;
 	ray1_len = draw_horisontal(map, wolf, player, ray);
 	ray2_len = draw_vertical(map, wolf, player, ray);
+	ray1_len_down = draw_horisontal_down(map, wolf, player, ray);
+	ray2_len_down = draw_vertical_down(map, wolf, player, ray);
+	if (ray1_len < 20 || ray2_len < 20)
+		wolf->is_hit = 1;
+	if (ray1_len_down < 20 || ray2_len_down < 20)
+		wolf->is_hit_down = 1;
 	if (ray1_len < ray2_len)
 	{
 		SDL_SetRenderDrawColor(wolf->renderer, 255, 255, 11, 255);
@@ -222,8 +299,6 @@ void			draw_rays(t_map map, t_wolf3d *wolf, t_player player)
 	{
 		ray[i].ray_angle = player.angle - fov / 2 + (float)i * angle_value;
 		draw_ray_map(map, wolf, player, &ray[i]);
-		if (i == SCREEN_WIDTH / 2 && ray[i].ray_len < 28)
-        	wolf->is_hit = 1;
 		draw_pseudo_3d(wolf, &ray[i], (float)i, player, map);
 		i++;
 	}

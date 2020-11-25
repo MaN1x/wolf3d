@@ -13,7 +13,7 @@ void			text_output(t_wolf3d *wolf)
 		printf("SDL create Renderer fail: %s\n", SDL_GetError());
 	else
 		printf("SDL create Renderer success\n");
-    SDL_Color color = {77, 77, 255};
+    SDL_Color color = {200, 12, 12};
 
 
 	SDL_Surface * surface = TTF_RenderText_Solid(wolf->button.txt.font,
@@ -67,7 +67,7 @@ void			text_output(t_wolf3d *wolf)
 
 void            gui(t_wolf3d *wolf)
 {
-	if ((wolf->button.win = SDL_CreateWindow("Setting",
+	if ((wolf->button.win = SDL_CreateWindow("Settings",
 				SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 500, 160, 0)) == NULL)
 		printf("Window create fail\n");
 	else
