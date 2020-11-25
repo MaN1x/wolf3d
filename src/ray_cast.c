@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_cast.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
+/*   By: npetrell <npetrell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 04:07:48 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/24 04:27:53 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/25 21:04:27 by npetrell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ float		draw_vertical_down(t_map map, t_wolf3d *wolf, t_player player, t_ray *ray
 	float	stepY;
 	float	ray_angle;
 
-	ray_angle = ray->ray_angle * M_PI;
+	ray_angle = ray->ray_angle + M_PI;
 	if (ray_angle < M_PI_2 || ray_angle > 3 * M_PI_2)
 	{
 		ray_x = (int)(player.x / wolf->factor) * wolf->factor  + wolf->factor;
@@ -216,7 +216,7 @@ float		draw_horisontal_down(t_map map, t_wolf3d *wolf, t_player player, t_ray *r
 	float	stepY;
 	float	ray_angle;
 
-	ray_angle = ray->ray_angle * M_PI;
+	ray_angle = ray->ray_angle + M_PI;
 	if (ray_angle < M_PI)
 	{
 		ray_y = (int)(player.y / wolf->factor) * wolf->factor + wolf->factor;
@@ -255,8 +255,10 @@ void			draw_ray_map(t_map map, t_wolf3d *wolf, t_player player, t_ray *ray)
 		ray->ray_angle -= 2 * M_PI;
 	ray1_len = draw_horisontal(map, wolf, player, ray);
 	ray2_len = draw_vertical(map, wolf, player, ray);
+
 	ray1_len_down = draw_horisontal_down(map, wolf, player, ray);
 	ray2_len_down = draw_vertical_down(map, wolf, player, ray);
+
 	if (ray1_len < 20 || ray2_len < 20)
 		wolf->is_hit = 1;
 	if (ray1_len_down < 20 || ray2_len_down < 20)

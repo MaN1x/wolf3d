@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+         #
+#    By: npetrell <npetrell@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/13 04:12:40 by mjoss             #+#    #+#              #
-#    Updated: 2020/11/23 22:01:21 by mjoss            ###   ########.fr        #
+#    Updated: 2020/11/25 21:04:34 by npetrell         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,6 @@ NAME	=	wolf3d
 
 SRC		=	main.c			\
 			init_sdl.c		\
-			put_pixel_sdl.c	\
 			destroy_sdl.c	\
 			parse_map.c		\
 			draw_map.c		\
@@ -23,7 +22,8 @@ SRC		=	main.c			\
 			texture_loader.c	\
 			logo_draw.c	\
 			button_draw.c	\
-			button_init.c
+			button_init.c	\
+			text_output_sett.c \
 
 HEADERS	=	map_parser.h	\
 			wolf3d.h		\
