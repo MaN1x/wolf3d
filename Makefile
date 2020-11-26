@@ -6,7 +6,7 @@
 #    By: npetrell <npetrell@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/13 04:12:40 by mjoss             #+#    #+#              #
-#    Updated: 2020/11/26 19:11:52 by mjoss            ###   ########.fr        #
+#    Updated: 2020/11/26 20:13:40 by mjoss            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,9 @@ SRC		=	main.c			\
 HEADERS	=	map_parser.h	\
 			wolf3d.h		\
 
+LIBFT_DIR = libft/
+LIBFT = $(LIBFT_DIR)/libft.a
+
 SRC_DIR = src/
 OBJ_DIR = obj/
 HEADERS_DIR = include/
@@ -47,20 +50,25 @@ HEADER_FILES = $(addprefix $(HEADERS_DIR), $(HEADERS))
 
 all: $(NAME)
 
-$(NAME): $(OBJ_DIR) $(OBJ_FILES)
-	gcc $(FLAGS) -g -L lib -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -L libft -lft $(OBJ_FILES) -o $(NAME)
+$(NAME): $(OBJ_DIR) $(OBJ_FILES) $(LIBFT)
+	@gcc $(FLAGS) -L lib -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -L libft -lft $(OBJ_FILES) -o $(NAME)
+
+$(LIBFT):
+	@make -sC $(LIBFT_DIR)
 
 $(OBJ_DIR):
-	mkdir $(OBJ_DIR)
+	@mkdir $(OBJ_DIR)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEADER_FILES)
-	gcc $(FLAGS) -g -I include -I libft/includes -o $@ -c $<
+	@gcc $(FLAGS) -I include -I libft/includes -o $@ -c $<
 
 clean:
-	rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJ_DIR)
+	@make -C $(LIBFT_DIR) clean
 
 fclean: clean
-	rm $(NAME)
+	@rm $(NAME)
+	@make -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
