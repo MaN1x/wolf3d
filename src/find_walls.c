@@ -6,7 +6,7 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 22:29:51 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/25 23:18:41 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/26 18:17:46 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		check_wall(int x, int y, t_map map)
 	return (0);
 }
 
-float	draw_vertical(t_map map, t_wolf3d *wolf, t_player player, t_ray *ray)
+float	draw_vertical(t_wolf3d *wlf, t_player player, t_ray *ray)
 {
 	float	r_xy[2];
 	float	step_x;
@@ -28,17 +28,17 @@ float	draw_vertical(t_map map, t_wolf3d *wolf, t_player player, t_ray *ray)
 
 	ray_angle = ray->ray_angle;
 	step_x = ray_angle < M_PI_2 || ray_angle > 3 * M_PI_2 ?
-			wolf->factor : -wolf->factor;
+			wlf->factor : -wlf->factor;
 	if (ray_angle < M_PI_2 || ray_angle > 3 * M_PI_2)
-		r_xy[0] = (int)(player.x / wolf->factor) * wolf->factor + wolf->factor;
+		r_xy[0] = (int)(player.x / wlf->factor) * wlf->factor + wlf->factor;
 	else
 	{
 		ray_angle = 2 * M_PI - ray_angle;
-		r_xy[0] = (int)(player.x / wolf->factor) * wolf->factor - 1;
+		r_xy[0] = (int)(player.x / wlf->factor) * wlf->factor - 1;
 	}
-	step_y = wolf->factor * tan(ray_angle);
+	step_y = wlf->factor * tan(ray_angle);
 	r_xy[1] = player.y + (fabs(player.x - r_xy[0])) * tan(ray_angle);
-	while (check_wall(r_xy[0] / wolf->factor, r_xy[1] / wolf->factor, map))
+	while (check_wall(r_xy[0] / wlf->factor, r_xy[1] / wlf->factor, *wlf->map))
 	{
 		r_xy[0] += step_x;
 		r_xy[1] += step_y;
@@ -48,7 +48,7 @@ float	draw_vertical(t_map map, t_wolf3d *wolf, t_player player, t_ray *ray)
 	return (sqrt(pow(player.x - r_xy[0], 2.0) + pow(player.y - r_xy[1], 2.0)));
 }
 
-float	draw_horisontal(t_map map, t_wolf3d *wolf, t_player player, t_ray *ray)
+float	draw_horisontal(t_wolf3d *wolf, t_player player, t_ray *ray)
 {
 	float	ray_x;
 	float	ray_y;
@@ -67,7 +67,7 @@ float	draw_horisontal(t_map map, t_wolf3d *wolf, t_player player, t_ray *ray)
 	}
 	step_x = wolf->factor / tan(ray_angle);
 	ray_x = player.x + (fabs(player.y - ray_y)) / tan(ray_angle);
-	while (check_wall(ray_x / wolf->factor, ray_y / wolf->factor, map))
+	while (check_wall(ray_x / wolf->factor, ray_y / wolf->factor, *wolf->map))
 	{
 		ray_x += step_x;
 		ray_y += step_y;
@@ -77,7 +77,7 @@ float	draw_horisontal(t_map map, t_wolf3d *wolf, t_player player, t_ray *ray)
 	return (sqrt(pow(player.x - ray_x, 2.0) + pow(player.y - ray_y, 2.0)));
 }
 
-float	draw_v_down(t_map map, t_wolf3d *wolf, t_player player, float ray_angle)
+float	draw_v_down(t_wolf3d *wolf, t_player player, float ray_angle)
 {
 	float	ray_x;
 	float	ray_y;
@@ -95,9 +95,7 @@ float	draw_v_down(t_map map, t_wolf3d *wolf, t_player player, float ray_angle)
 	}
 	step_y = wolf->factor * tan(ray_angle);
 	ray_y = player.y + (fabs(player.x - ray_x)) * tan(ray_angle);
-	while (ray_y / wolf->factor > 0 && ray_y / wolf->factor < map.height &&
-		ray_x / wolf->factor > 0 && ray_x / wolf->factor < map.width &&
-		map.map[(int)(ray_y / wolf->factor)][(int)(ray_x / wolf->factor)] != 1)
+	while (check_wall(ray_x / wolf->factor, ray_y / wolf->factor, *wolf->map))
 	{
 		ray_x += step_x;
 		ray_y += step_y;
@@ -105,7 +103,7 @@ float	draw_v_down(t_map map, t_wolf3d *wolf, t_player player, float ray_angle)
 	return (sqrt(pow(player.x - ray_x, 2.0) + pow(player.y - ray_y, 2.0)));
 }
 
-float	draw_h_down(t_map map, t_wolf3d *wolf, t_player player, float ray_angle)
+float	draw_h_down(t_wolf3d *wolf, t_player player, float ray_angle)
 {
 	float	ray_x;
 	float	ray_y;
@@ -122,9 +120,7 @@ float	draw_h_down(t_map map, t_wolf3d *wolf, t_player player, float ray_angle)
 	}
 	step_x = wolf->factor / tan(ray_angle);
 	ray_x = player.x + (fabs(player.y - ray_y)) / tan(ray_angle);
-	while (ray_y / wolf->factor > 0 && ray_y / wolf->factor < map.height &&
-		ray_x / wolf->factor > 0 && ray_x / wolf->factor < map.width &&
-	map.map[(int)(ray_y / wolf->factor)][(int)(ray_x / wolf->factor)] != 1)
+	while (check_wall(ray_x / wolf->factor, ray_y / wolf->factor, *wolf->map))
 	{
 		ray_x += step_x;
 		ray_y += step_y;

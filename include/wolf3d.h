@@ -6,7 +6,7 @@
 /*   By: npetrell <npetrell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 22:54:30 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/25 23:03:27 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/26 19:54:36 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct			s_logo
 {
 	SDL_Rect			rect;
 	t_color				color;
-}						t_logo;		
+}						t_logo;
 
 typedef struct			s_sounds
 {
@@ -110,9 +110,9 @@ typedef struct			s_ray
 
 typedef struct			s_player
 {
-	int		x;
-	int		y;
-	float	angle;
+	float		x;
+	float		y;
+	float		angle;
 }						t_player;
 
 typedef struct			s_pos
@@ -122,27 +122,37 @@ typedef struct			s_pos
 }						t_pos;
 
 t_wolf3d				init_sdl();
-//void    				put_pixel_sdl(t_wolf3d wolf, int x, int y, t_color color);
 void					destroy_sdl(t_wolf3d wolf);
 
-void					draw_map(t_map map, t_wolf3d *wolf);
+void					draw_map(t_wolf3d *wolf);
 void					draw_player(t_wolf3d *wolf, t_pos first, t_pos second);
-void					draw_rays(t_map map, t_wolf3d *wolf, t_player player);
+void					draw_rays(t_wolf3d *wolf, t_player player);
 void					load_textures(t_wolf3d *wolf);
 void					button_draw(t_wolf3d *wolf);
 void					button_init(t_wolf3d *wolf);
 void					logo_draw(t_wolf3d *wolf);
-void 					free_wall(t_wall *wall_textures);
+void					free_wall(t_wall *wall_textures);
 void					fill_rect_e(t_wolf3d wolf, t_ray ray, SDL_Rect *rect);
 void					fill_rect_n(t_wolf3d wolf, t_ray ray, SDL_Rect *rect);
 void					fill_rect_w(t_wolf3d wolf, t_ray ray, SDL_Rect *rect);
 void					fill_rect_s(t_wolf3d wolf, t_ray ray, SDL_Rect *rect);
-float					draw_vertical(t_map map, t_wolf3d *wolf, t_player player, t_ray *ray);
-float					draw_horisontal(t_map map, t_wolf3d *wolf, t_player player, t_ray *ray);
-float					draw_v_down(t_map map, t_wolf3d *wolf, t_player player, float ray_angle);
-float					draw_h_down(t_map map, t_wolf3d *wolf, t_player player, float ray_angle);
-void 					hit_x(t_wolf3d *wolf, t_ray *ray, SDL_Rect *s, SDL_Rect *d);
-void					hit_y(t_wolf3d *wolf, t_ray *ray, SDL_Rect *s, SDL_Rect *d);
+float					draw_vertical(t_wolf3d *wolf, t_player player,
+																t_ray *ray);
+float					draw_horisontal(t_wolf3d *wolf, t_player player,
+																t_ray *ray);
+float					draw_v_down(t_wolf3d *wolf, t_player player,
+															float ray_angle);
+float					draw_h_down(t_wolf3d *wolf, t_player player,
+															float ray_angle);
+void					hit_x(t_wolf3d *wolf, t_ray *ray, SDL_Rect *s,
+																SDL_Rect *d);
+void					hit_y(t_wolf3d *wolf, t_ray *ray, SDL_Rect *s,
+																SDL_Rect *d);
 void					text_output(t_wolf3d *wolf);
+void					movement(t_wolf3d wolf, t_player *player,
+										float *player_dx, float *player_dy);
+void					music_control(t_wolf3d wolf);
+void					draw_all(t_wolf3d *wolf, t_player player,
+										float player_dx, float player_dy);
 
 #endif
