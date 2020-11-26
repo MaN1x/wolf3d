@@ -6,7 +6,7 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/26 19:05:32 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/26 19:08:39 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/26 20:25:33 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,5 +102,7 @@ int	get_map_len(char *path)
 		return (-1);
 	}
 	close(fd);
+	if (buf[BUFF_SIZE - 1] != '\n')
+		return (-2);
 	return (map_len);
 }

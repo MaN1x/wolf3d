@@ -6,7 +6,7 @@
 /*   By: npetrell <npetrell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 20:40:54 by npetrell          #+#    #+#             */
-/*   Updated: 2020/11/25 21:22:23 by npetrell         ###   ########.fr       */
+/*   Updated: 2020/11/26 20:48:47 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,9 @@ void				text_output(t_wolf3d *wolf)
 		ft_putstr("SDL create Renderer fail %s\n");
 		exit(0);
 	}
-	color.r = 200;
+	SDL_SetRenderDrawColor(renderer, 200, 208, 208, 255);
+	SDL_RenderClear(renderer);
+	color.r = 100;
 	color.g = 12;
 	color.b = 12;
 	first_string(wolf, &renderer, color);

@@ -6,7 +6,7 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 16:00:08 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/26 19:10:42 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/26 20:30:42 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ int			parse_map(char *path, t_map *map)
 	int		map_len;
 	char	*map_tmp;
 
-	if ((map_len = get_map_len(path)) == -1)
-		return (0);
+	if ((map_len = get_map_len(path)) == -1 || map_len == -2)
+		return (map_len);
 	if (!(map_tmp = ft_strnew(map_len)))
 	{
 		perror(NULL);
