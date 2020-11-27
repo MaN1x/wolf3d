@@ -6,7 +6,7 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 16:00:08 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/26 20:30:42 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/27 21:08:44 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,21 @@ static int	check_map_width(const char *map_tmp)
 	while (map_tmp[i] != '\n' && map_tmp[i])
 		i++;
 	if (map_tmp[i] == '\n')
-		width = i;
+		width = i++;
 	else
 		return (0);
-	while (map_tmp[++i])
+	while (map_tmp[i])
 	{
 		if (map_tmp[i] == '\n')
-		{
 			if (counter == width)
 				counter = 0;
 			else
 				return (0);
-			i++;
-		}
-		counter++;
+		else
+			counter++;
+		i++;
 	}
-	return (1);
+	return (counter == 0 ? 1 : 0);
 }
 
 static int	check_map_symbols(const char *map_tmp)
@@ -68,7 +67,9 @@ static int	check_map_symbols(const char *map_tmp)
 
 static int	check_map(const char *map_tmp)
 {
-	return (check_map_width(map_tmp) && check_map_symbols(map_tmp));
+	return (check_map_width(map_tmp) &&
+			check_map_symbols(map_tmp) &&
+			check_character(map_tmp));
 }
 
 int			parse_map(char *path, t_map *map)
@@ -76,8 +77,8 @@ int			parse_map(char *path, t_map *map)
 	int		map_len;
 	char	*map_tmp;
 
-	if ((map_len = get_map_len(path)) == -1 || map_len == -2)
-		return (map_len);
+	if ((map_len = get_map_len(path)) == -1)
+		return (0);
 	if (!(map_tmp = ft_strnew(map_len)))
 	{
 		perror(NULL);

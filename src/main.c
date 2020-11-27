@@ -6,7 +6,7 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 04:07:18 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/26 20:28:37 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/27 19:57:52 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	check_map(int argc, char *path, t_map *map)
 		ft_putstr("wrong number of arguments\n");
 		exit(0);
 	}
-	if ((map_status = parse_map(path, map)) == -1 || map_status == -2)
+	if ((map_status = parse_map(path, map)) == -1)
 	{
 		ft_putstr("wrong map\n");
 		exit(0);

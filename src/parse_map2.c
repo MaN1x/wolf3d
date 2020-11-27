@@ -102,7 +102,5 @@ int	get_map_len(char *path)
 		return (-1);
 	}
 	close(fd);
-	if (buf[BUFF_SIZE - 1] != '\n')
-		return (-2);
 	return (map_len);
 }

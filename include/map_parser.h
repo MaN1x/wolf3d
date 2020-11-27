@@ -6,7 +6,7 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 15:50:01 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/26 19:10:42 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/27 20:54:25 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,6 @@ int				get_map_width(const char *map_tmp);
 int				get_map_height(const char *map_tmp);
 int				create_mass(t_map *map);
 void			from_char2struct(t_map *map, char *map_tmp);
+int 			check_character(const char *map);
 
 #endif
