@@ -6,7 +6,7 @@
 /*   By: mjoss <mjoss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 16:00:08 by mjoss             #+#    #+#             */
-/*   Updated: 2020/11/27 21:08:44 by mjoss            ###   ########.fr       */
+/*   Updated: 2020/11/27 21:08:54 by mjoss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	check_map_width(const char *map_tmp)
 			counter++;
 		i++;
 	}
-	return (counter == 0 ? 1 : 0);
+	return ((counter == 0 && width > 1) ? 1 : 0);
 }
 
 static int	check_map_symbols(const char *map_tmp)
